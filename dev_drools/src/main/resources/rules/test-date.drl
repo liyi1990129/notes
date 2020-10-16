@@ -1,0 +1,30 @@
+package rules;
+import com.stu.drools.model.fact.RuleExecutionResult;
+global RuleExecutionResult _result;
+import com.stu.drools.model.fact.Claim;
+import java.lang.String;
+import java.util.Map;
+import java.util.List;
+
+//当前时间大于等于指定date，规则有效
+rule "test-date1"
+    date-effective "2020-07-16"
+when
+then
+    System.out.println("date-effective 生效时间执行。。。。");
+end
+//当前时间小于等于指定date，规则有效
+rule "test-date2"
+    date-expires "2020-07-16"
+when
+then
+    System.out.println("date-expires 失效时间执行。。。。");
+end
+
+rule "test-date3"
+   date-effective "2020-07-16"
+   date-expires "2020-07-18"
+when
+then
+    System.out.println("salience3 执行。。。。");
+end

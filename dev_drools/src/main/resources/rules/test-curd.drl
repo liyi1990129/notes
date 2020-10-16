@@ -1,0 +1,56 @@
+package com.drools.rules;
+import com.stu.drools.model.fact.RuleExecutionResult;
+global RuleExecutionResult _result;
+import com.stu.drools.model.fact.RuleExecutionObject;
+import com.stu.drools.entity.Person;
+import java.lang.String;
+import java.util.Map;
+import java.util.List;
+
+
+//insert
+rule "test"
+no-loop true
+salience 4
+when
+
+then
+  Person person = new Person();
+  person.setName("person");
+  insert(person);
+end
+
+//update
+rule "test1"
+   no-loop true
+   salience 3
+   when
+     $person: Person(name=="person")
+   then
+     System.out.println("test1");
+     $person.setAge(20);
+     update($person);
+   end
+
+
+//delete
+rule "test2"
+   no-loop true
+   salience 2
+   when
+     $person: Person(age==20)
+   then
+//    delete($person);
+    retract($person);
+    System.out.println("test2");
+   end
+
+
+rule "test3"
+   no-loop true
+   salience 1
+   when
+     $person: Person()
+   then
+    System.out.println("test3");
+   end

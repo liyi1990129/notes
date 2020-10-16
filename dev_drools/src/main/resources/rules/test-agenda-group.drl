@@ -1,0 +1,36 @@
+package rules;
+import com.stu.drools.model.fact.RuleExecutionResult;
+global RuleExecutionResult _result;
+import com.stu.drools.model.fact.Claim;
+import java.lang.String;
+import java.util.Map;
+import java.util.List;
+
+
+// 设置焦点有两个办法
+// 1. 代码设置
+// 2. 规则自动获取焦点
+//得到 Focus（焦点），这样位于该 Agenda Group 当中的规则会才触发执行，否则将不执行
+//session.getAgenda().getAgendaGroup("group1").setFocus();
+//auto-focus true  自动获取焦点
+rule "test1"
+    agenda-group "group1"
+when
+then
+    System.out.println("group1 test1执行。。。。");
+end
+
+rule "test2"
+    agenda-group "group1"
+when
+then
+    System.out.println("group1 test2执行。。。。");
+end
+
+rule "test3"
+   agenda-group "group2"
+   auto-focus true
+when
+then
+    System.out.println("group2 执行。。。。");
+end

@@ -1,0 +1,53 @@
+package com.drools.rules;
+import com.stu.drools.model.fact.RuleExecutionResult;
+global RuleExecutionResult _result;
+import com.stu.drools.model.fact.RuleExecutionObject;
+import com.stu.drools.entity.Person;
+import java.lang.String;
+import java.util.Map;
+import java.util.List;
+import com.stu.drools.entity.School;
+import com.stu.drools.service.DroolsActionService;
+
+/*
+contains 包含
+*/
+rule "test1"
+no-loop true
+when
+$fact:RuleExecutionObject()
+$school:School()
+//$person:Person(age contains $school.count )
+$person:Person(name not contains 'li' )
+then
+ System.out.println("test1 被触发");
+ $person.setName("lisi");
+ update($person)
+end
+
+// update 更新
+//enabled 引擎就不会执行该规则
+rule "test2"
+no-loop true
+enabled false
+when
+$fact:RuleExecutionObject()
+$school:School()
+$person:Person(name contains 'li' )
+then
+ System.out.println("test2 被触发");
+end
+
+
+//访问 List 数据结构       $customer.accounts[3]等同于$customer.getAccounts(3)
+//访问 Map 数据结构   $customerMap["123"]等同于$customerMap.get["123"]
+//memberOf  not memberOf集合类型的数据是作为被比较项的，集合类型的数据对象位于 memberOf 操作符后面，同时在用 memberOf 比较操作符时被比较项一定要是一个变量(绑定 变量或者是一个 global 对象)，而不能是一个静态
+rule "test3"
+no-loop true
+when
+$fact:RuleExecutionObject()
+$school:School()
+$person:Person(name memberOf $school.data["list"])
+then
+ System.out.println("test3 被触发");
+end

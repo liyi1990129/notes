@@ -1,0 +1,29 @@
+package rules;
+import com.stu.drools.model.fact.RuleExecutionResult;
+global RuleExecutionResult _result;
+import com.stu.drools.model.fact.Claim;
+import java.lang.String;
+import java.util.Map;
+import java.util.List;
+
+//同一组的规则，只能有一个被执行，其他的不生效 可通过设置salience优先级指定规则执行，此时只执行优先级最高的规则
+rule "test1"
+    activation-group "group1"
+when
+then
+    System.out.println("group1 test1执行。。。。");
+end
+
+rule "test2"
+    activation-group "group1"
+when
+then
+    System.out.println("group1 test2执行。。。。");
+end
+
+rule "test3"
+   activation-group "group2"
+when
+then
+    System.out.println("group2 执行。。。。");
+end

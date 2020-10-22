@@ -1,7 +1,7 @@
 package com.stu.drools.biz;
 
-import com.stu.drools.mapper.BaseRuleConditionInfoMapper;
-import com.stu.drools.model.BaseRuleConditionInfo;
+import com.stu.drools.mapper.RuleConditionInfoMapper;
+import com.stu.drools.model.RuleConditionInfo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -10,7 +10,7 @@ import java.util.List;
 @Service
 public class RuleConditionBiz {
     @Resource
-    private BaseRuleConditionInfoMapper baseRuleConditionInfoMapper;
+    private RuleConditionInfoMapper ruleConditionInfoMapper;
 
     /**
      * Date 2017/7/26
@@ -20,10 +20,10 @@ public class RuleConditionBiz {
      *
      * @param ruleId 规则id
      */
-    public List<BaseRuleConditionInfo> findRuleConditionInfoByRuleId(Long ruleId) throws Exception {
+    public List<RuleConditionInfo> findRuleConditionInfoByRuleId(Long ruleId) throws Exception {
         if(null == ruleId){
             throw new NullPointerException("参数缺失");
         }
-        return this.baseRuleConditionInfoMapper.findRuleConditionInfoByRuleId(ruleId,null);
+        return this.ruleConditionInfoMapper.findRuleConditionInfoByRuleId(ruleId,null);
     }
 }

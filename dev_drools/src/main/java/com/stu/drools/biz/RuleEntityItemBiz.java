@@ -2,8 +2,8 @@ package com.stu.drools.biz;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.stu.drools.mapper.BaseRuleEntityItemInfoMapper;
-import com.stu.drools.model.BaseRuleEntityItemInfo;
+import com.stu.drools.mapper.RuleEntityItemInfoMapper;
+import com.stu.drools.model.RuleEntityItemInfo;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
@@ -15,28 +15,28 @@ import java.util.Map;
 @Service
 public class RuleEntityItemBiz {
     @Resource
-    private BaseRuleEntityItemInfoMapper baseRuleEntityItemInfoMapper;
+    private RuleEntityItemInfoMapper ruleEntityItemInfoMapper;
 
     public PageInfo page(Map<String, Object> params) {
         Integer pageNumber = (Integer) params.get("pageNumber");
         Integer pageSize = (Integer) params.get("pageSize");
-        Example example = new Example(BaseRuleEntityItemInfo.class);
+        Example example = new Example(RuleEntityItemInfo.class);
         Example.Criteria criteria = example.createCriteria();
 
         PageHelper.startPage(pageNumber,pageSize);
-        List<BaseRuleEntityItemInfo> list = this.baseRuleEntityItemInfoMapper.selectByExample(example);
+        List<RuleEntityItemInfo> list = this.ruleEntityItemInfoMapper.selectByExample(example);
 
         PageInfo pageInfo = new PageInfo<>(list);
         return pageInfo;
     }
-    public BaseRuleEntityItemInfo findBaseRuleEntityItemInfoById(Integer id)  {
-        return this.baseRuleEntityItemInfoMapper.findBaseRuleEntityItemInfoById(id);
+    public RuleEntityItemInfo findBaseRuleEntityItemInfoById(Integer id)  {
+        return this.ruleEntityItemInfoMapper.findBaseRuleEntityItemInfoById(id);
     }
 
-    public List<BaseRuleEntityItemInfo> listByParams(Map<String,Object> params)  {
+    public List<RuleEntityItemInfo> listByParams(Map<String,Object> params)  {
         Integer entityId = (Integer) params.get("entityId");
         Integer isEffect = (Integer) params.get("isEffect");
-        Example example = new Example(BaseRuleEntityItemInfo.class);
+        Example example = new Example(RuleEntityItemInfo.class);
         Example.Criteria criteria = example.createCriteria();
         if(null!=entityId){
             criteria.andEqualTo("entityId",entityId);
@@ -45,32 +45,32 @@ public class RuleEntityItemBiz {
             criteria.andEqualTo("isEffect",isEffect);
         }
 
-        return this.baseRuleEntityItemInfoMapper.selectByExample(example);
+        return this.ruleEntityItemInfoMapper.selectByExample(example);
     }
     public void delInfoById(Integer id)  {
-        Example example = new Example(BaseRuleEntityItemInfo.class);
+        Example example = new Example(RuleEntityItemInfo.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("itemId",id);
-        this.baseRuleEntityItemInfoMapper.deleteByExample(example);
+        this.ruleEntityItemInfoMapper.deleteByExample(example);
     }
     public void delInfoByEntityId(Integer entityId)  {
-        Example example = new Example(BaseRuleEntityItemInfo.class);
+        Example example = new Example(RuleEntityItemInfo.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("entityId",entityId);
-        this.baseRuleEntityItemInfoMapper.deleteByExample(example);
+        this.ruleEntityItemInfoMapper.deleteByExample(example);
     }
 
 
-    public void saveOrUpdate(BaseRuleEntityItemInfo info){
+    public void saveOrUpdate(RuleEntityItemInfo info){
         if(null== info.getItemId()){
             info.setCreTime(new Date());
             info.setCreUserId(new Long(1));
-            this.baseRuleEntityItemInfoMapper.insertSelective(info);
+            this.ruleEntityItemInfoMapper.insertSelective(info);
         }else {
-            Example example = new Example(BaseRuleEntityItemInfo.class);
+            Example example = new Example(RuleEntityItemInfo.class);
             Example.Criteria criteria = example.createCriteria();
             criteria.andEqualTo("itemId",info.getEntityId());
-            this.baseRuleEntityItemInfoMapper.updateByExample(info,example);
+            this.ruleEntityItemInfoMapper.updateByExample(info,example);
         }
     }
 }

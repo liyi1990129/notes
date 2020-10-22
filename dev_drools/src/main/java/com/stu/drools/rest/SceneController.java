@@ -1,10 +1,11 @@
 package com.stu.drools.rest;
 
+import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageInfo;
 import com.stu.drools.biz.RuleSceneBiz;
 import com.stu.drools.common.ObjectRestResponse;
-import com.stu.drools.model.BaseRuleEntityInfo;
-import com.stu.drools.model.BaseRuleSceneInfo;
+import com.stu.drools.model.RuleEntityInfo;
+import com.stu.drools.model.RuleSceneInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -39,8 +40,8 @@ public class SceneController {
             return res;
         }
 
-        BaseRuleSceneInfo info = ruleSceneBiz.getInfoById(id);
-        List<BaseRuleEntityInfo> list = ruleSceneBiz.findBaseRuleEntityListByScene(info);
+        RuleSceneInfo info = ruleSceneBiz.getInfoById(id);
+        List<RuleEntityInfo> list = ruleSceneBiz.findBaseRuleEntityListByScene(info);
         Map<String,Object> result = new HashMap<>();
         result.put("info",info);
         result.put("list",list);
@@ -63,6 +64,15 @@ public class SceneController {
     @PostMapping(value = "/saveOrUpdate")
     public ObjectRestResponse saveOrUpdate(@RequestBody Map<String,Object> params){
         ObjectRestResponse res = new ObjectRestResponse();
+        String info = (String) params.get("scene");
+        String entitys = (String) params.get("entitys");
+        RuleSceneInfo ruleSceneInfo = JSON.parseObject(info, RuleSceneInfo.class);
+        Integer id = ruleSceneInfo.getSceneId();
+        if(ruleSceneInfo.getSceneId()==null){
+            id = ruleSceneBiz.saveOrUpdate(ruleSceneInfo);
+        }else{
+            ruleSceneBiz.delRelInfoById(id);
+        }
 
 
         res.setSuucessMsg("");

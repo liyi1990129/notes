@@ -1,7 +1,7 @@
 package com.stu.drools.biz;
 
-import com.stu.drools.mapper.BaseRuleActionParamValueInfoMapper;
-import com.stu.drools.model.BaseRuleActionParamValueInfo;
+import com.stu.drools.mapper.RuleActionParamValueInfoMapper;
+import com.stu.drools.model.RuleActionParamValueInfo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -9,7 +9,7 @@ import javax.annotation.Resource;
 @Service
 public class RuleActionParamValueBiz {
     @Resource
-    private BaseRuleActionParamValueInfoMapper baseRuleActionParamValueInfoMapper;
+    private RuleActionParamValueInfoMapper ruleActionParamValueInfoMapper;
 
     /**
      * Date 2017/7/27
@@ -19,10 +19,10 @@ public class RuleActionParamValueBiz {
      *
      * @param paramId 参数id
      */
-    public BaseRuleActionParamValueInfo findRuleParamValueByActionParamId(Long paramId) throws Exception {
+    public RuleActionParamValueInfo findRuleParamValueByActionParamId(Long paramId) throws Exception {
         if(null == paramId){
             throw new NullPointerException("参数缺失");
         }
-        return this.baseRuleActionParamValueInfoMapper.findRuleParamValueByActionParamId(paramId);
+        return this.ruleActionParamValueInfoMapper.findRuleParamValueByActionParamId(paramId);
     }
 }

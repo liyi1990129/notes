@@ -89,7 +89,7 @@ public class DroolsBiz {
             // 2.2将 ruleExecutionObject 也插入到规则中，回调使用
             session.insert(ruleExecutionObject);
             // 3.将规则涉及的所有动作实现类插入到规则中(如果没有，则不处理)
-            BaseRuleSceneInfo sceneInfo = new BaseRuleSceneInfo();
+            RuleSceneInfo sceneInfo = new RuleSceneInfo();
             sceneInfo.setSceneIdentify(scene);
 //            //根据场景获取所有的动作信息
 //            List<BaseRuleActionInfo> actionList = this.ruleActionService.findRuleActionListByScene(sceneInfo);
@@ -141,17 +141,17 @@ public class DroolsBiz {
         droolRuleStr.append("import com.stu.drools.model.fact.RuleExecutionObject").append(";").append(lineSeparator);
         // 3.引入实体信息（根据场景获取相关的实体信息）
         //传参
-        BaseRuleSceneInfo sceneInfo = new BaseRuleSceneInfo();
+        RuleSceneInfo sceneInfo = new RuleSceneInfo();
         sceneInfo.setSceneIdentify(scene);
-        List<BaseRuleEntityInfo> entityList = this.ruleSceneEntityRelBiz.findBaseRuleEntityListByScene(sceneInfo);
+        List<RuleEntityInfo> entityList = this.ruleSceneEntityRelBiz.findBaseRuleEntityListByScene(sceneInfo);
         log.info("场景对应的实体个数为:{}", entityList.size());
         // 4.根据场景加载可用的规则信息
-        List<BaseRuleInfo> ruleList = this.ruleInfoBiz.findBaseRuleListByScene(sceneInfo);
+        List<RuleInfo> ruleList = this.ruleInfoBiz.findBaseRuleListByScene(sceneInfo);
         log.info("场景可用规则个数为:{}", ruleList.size());
         // 5.根据实体信息先组合drools的import语句
         droolRuleStr = this.insertImportInfo(droolRuleStr, entityList, sceneInfo);
         // 6.遍历并拼出每个规则的执行drools串
-        for (BaseRuleInfo ruleInfo : ruleList) {
+        for (RuleInfo ruleInfo : ruleList) {
             StringBuffer ruleTemp;
             ruleTemp = this.getDroolsInfoByRule(ruleInfo);
             droolRuleStr.append(ruleTemp);
@@ -169,11 +169,11 @@ public class DroolsBiz {
      * @param droolRuleStr 规则串
      * @param entityList   实体信息
      */
-    private StringBuffer insertImportInfo(StringBuffer droolRuleStr, List<BaseRuleEntityInfo> entityList,
-                                          BaseRuleSceneInfo sceneInfo) throws Exception {
+    private StringBuffer insertImportInfo(StringBuffer droolRuleStr, List<RuleEntityInfo> entityList,
+                                          RuleSceneInfo sceneInfo) throws Exception {
 
         // 1.导入场景对应的实体类
-        for (BaseRuleEntityInfo entityInfo : entityList) {
+        for (RuleEntityInfo entityInfo : entityList) {
             droolRuleStr.append("import").append(" ").append(entityInfo.getPkgName()).append(";").append(lineSeparator);
         }
         // 2.导入基本类
@@ -182,12 +182,12 @@ public class DroolsBiz {
         droolRuleStr.append("import").append(" ").append("java.util.List").append(";").append(lineSeparator);
         // 3.导入动作类
         //根据场景获取动作类信息
-        List<BaseRuleActionInfo> actionList = this.ruleActionInfoBiz.findRuleActionListByScene(sceneInfo);
+        List<RuleActionInfo> actionList = this.ruleActionInfoBiz.findRuleActionListByScene(sceneInfo);
         if (StringUtil.listIsNotNull(actionList)) {
             //是否有实现类动作
             Boolean implFlag = false;
             //循环处理
-            for (BaseRuleActionInfo actionInfo : actionList) {
+            for (RuleActionInfo actionInfo : actionList) {
 
                 if (!implFlag) {
                     //如果是实现动作类，则先打标记
@@ -215,7 +215,7 @@ public class DroolsBiz {
      *
      * @param ruleInfo 规则
      */
-    private StringBuffer getDroolsInfoByRule(BaseRuleInfo ruleInfo) throws Exception {
+    private StringBuffer getDroolsInfoByRule(RuleInfo ruleInfo) throws Exception {
         //拼接规则字符串
         StringBuffer sb = new StringBuffer();
         // 1.拼接规则自身属性信息
@@ -238,13 +238,13 @@ public class DroolsBiz {
      * @param ruleStr  规则字符串
      * @param ruleInfo 规则
      */
-    private StringBuffer insertRuleInfo(StringBuffer ruleStr, BaseRuleInfo ruleInfo) throws Exception {
+    private StringBuffer insertRuleInfo(StringBuffer ruleStr, RuleInfo ruleInfo) throws Exception {
         // 1.拼接规则名称(默认带双引号)
         ruleStr.append(lineSeparator).append("rule").append(" ").append("\"").append(ruleInfo.getRuleName()).append("\"").append(lineSeparator);
         // 2.拼接自身属性
-        List<BaseRulePropertyRelInfo> rulePropertyList = this.ruleInfoBiz.findRulePropertyListByRuleId(ruleInfo.getRuleId());
+        List<RulePropertyRelInfo> rulePropertyList = this.ruleInfoBiz.findRulePropertyListByRuleId(ruleInfo.getRuleId());
         if (StringUtil.listIsNotNull(rulePropertyList)) {
-            for (BaseRulePropertyRelInfo pro : rulePropertyList) {
+            for (RulePropertyRelInfo pro : rulePropertyList) {
                 //如果配置的属性参数是字符串，则单独处理
                 if (ArrayUtils.contains(arr, pro.getRulePropertyIdentify())) {
                     ruleStr.append("    ").append(pro.getRulePropertyIdentify()).append(" ").append("\"").append(pro.getRulePropertyValue()).append("\"").append(lineSeparator);
@@ -266,7 +266,7 @@ public class DroolsBiz {
      * @param ruleStr  规则字符串
      * @param ruleInfo 规则
      */
-    private StringBuffer insertRuleCondition(StringBuffer ruleStr, BaseRuleInfo ruleInfo) throws Exception {
+    private StringBuffer insertRuleCondition(StringBuffer ruleStr, RuleInfo ruleInfo) throws Exception {
         // 1.拼接when
         ruleStr.append(lineSeparator).append("when").append(lineSeparator);
         //参数
@@ -277,7 +277,7 @@ public class DroolsBiz {
             ruleStr.append("$action").append(":").append("DroolsActionService()").append(lineSeparator);
         }
         // 3.根据规则id获取条件信息
-        List<BaseRuleConditionInfo> conList = this.ruleConditionBiz.findRuleConditionInfoByRuleId(ruleInfo.getRuleId());
+        List<RuleConditionInfo> conList = this.ruleConditionBiz.findRuleConditionInfoByRuleId(ruleInfo.getRuleId());
         //如果没有找到条件信息，则默认永远满足
         if (StringUtil.listIsNotNull(conList)) {
             ruleStr = this.insertRuleConditionFromList(ruleStr, conList);
@@ -298,7 +298,7 @@ public class DroolsBiz {
      * @param ruleStr 规则串
      * @param conList 条件集合
      */
-    private StringBuffer insertRuleConditionFromList(StringBuffer ruleStr, List<BaseRuleConditionInfo> conList) throws Exception {
+    private StringBuffer insertRuleConditionFromList(StringBuffer ruleStr, List<RuleConditionInfo> conList) throws Exception {
 
         //只保存条件内容
         StringBuilder sb = new StringBuilder();
@@ -308,7 +308,7 @@ public class DroolsBiz {
         String relation = "&&";
         //TODO 暂时先按照多个条件处理（目前只实现&&关系条件）
         for (int c = 0; c < conList.size(); c++) {
-            BaseRuleConditionInfo conditionInfo = conList.get(c);
+            RuleConditionInfo conditionInfo = conList.get(c);
             //表达式
             String expression = conditionInfo.getConditionExpression();
             //先处理==、>=、<=、>、<、！=后面的变量
@@ -325,7 +325,7 @@ public class DroolsBiz {
                     expression = expression.replace("$" + itemId + "$", DateUtil.getToday());
                 }else {
                     // 2.根据itemId获取实体属性信息
-                    BaseRuleEntityItemInfo itemInfo = this.ruleEntityItemBiz.findBaseRuleEntityItemInfoById(Integer.parseInt(itemId));
+                    RuleEntityItemInfo itemInfo = this.ruleEntityItemBiz.findBaseRuleEntityItemInfoById(Integer.parseInt(itemId));
                     if (null == entityId || !entityId.equals(itemInfo.getEntityId())) {
                         entityId = itemInfo.getEntityId();
                     }
@@ -344,7 +344,7 @@ public class DroolsBiz {
         }
 
         //获取实体
-        BaseRuleEntityInfo entityInfo = this.ruleEntityBiz.findBaseRuleEntityInfoById(entityId);
+        RuleEntityInfo entityInfo = this.ruleEntityBiz.findBaseRuleEntityInfoById(entityId);
         // 5.拼接实体类,完成条件拼接（例如：$User( age > 20 && sex==1) ）
         //TODO 日期格式需要单独处理
         ruleStr.append("$").append(entityInfo.getEntityIdentify()).append(":").append(entityInfo.getEntityClazz()).append("(").append(sb).append(")").append(lineSeparator);
@@ -361,11 +361,11 @@ public class DroolsBiz {
      * @param ruleStr  规则串
      * @param ruleInfo 规则
      */
-    private StringBuffer insertRuleActionInfo(StringBuffer ruleStr, BaseRuleInfo ruleInfo) throws Exception {
+    private StringBuffer insertRuleActionInfo(StringBuffer ruleStr, RuleInfo ruleInfo) throws Exception {
         // 1.拼接then
         ruleStr.append(lineSeparator).append("then").append(lineSeparator);
         // 2.根据规则获取动作信息
-        List<BaseRuleActionInfo> actionList = this.ruleActionInfoBiz.findRuleActionListByRule(ruleInfo.getRuleId());
+        List<RuleActionInfo> actionList = this.ruleActionInfoBiz.findRuleActionListByRule(ruleInfo.getRuleId());
         //如果没有获取到动作信息，则默认动作部分为空
         if (!StringUtil.listIsNotNull(actionList)) {
             ruleStr.append(lineSeparator).append("end").append(lineSeparator);
@@ -374,18 +374,18 @@ public class DroolsBiz {
             //是否有实现类动作
             Boolean implFlag = false;
             //临时动作对象
-            BaseRuleActionInfo action;
+            RuleActionInfo action;
             //动作参数对象
-            BaseRuleActionParamInfo paramInfo;
+            RuleActionParamInfo paramInfo;
             //动作参数值
-            BaseRuleActionParamValueInfo paramValue;
+            RuleActionParamValueInfo paramValue;
             // 3.循环处理每一个动作
-            for (BaseRuleActionInfo actionTemp : actionList) {
+            for (RuleActionInfo actionTemp : actionList) {
                 //动作实体
                 action = actionTemp;
                 // 4.获取动作参数信息
-                List<BaseRuleActionParamInfo> paraList = this.ruleActionParamBiz.findRuleActionParamByActionId(action.getActionId());
-                for (BaseRuleActionParamInfo paramTemp : paraList) {
+                List<RuleActionParamInfo> paraList = this.ruleActionParamBiz.findRuleActionParamByActionId(action.getActionId());
+                for (RuleActionParamInfo paramTemp : paraList) {
                     paramInfo = paramTemp;
                     // 5.获取动作参数值信息
                     paramValue = this.ruleActionParamValueBiz.findRuleParamValueByActionParamId(paramInfo.getActionParamId());
@@ -412,9 +412,9 @@ public class DroolsBiz {
                                 realValue = tempValue.replace("#" + itemId + "#", "\""+DateUtil.getToday()+"\"");
                             }else{
                                 //获取item属性
-                                BaseRuleEntityItemInfo itemInfo = this.ruleEntityItemBiz.findBaseRuleEntityItemInfoById(Integer.parseInt(itemId));
+                                RuleEntityItemInfo itemInfo = this.ruleEntityItemBiz.findBaseRuleEntityItemInfoById(Integer.parseInt(itemId));
                                 //获取实体
-                                BaseRuleEntityInfo entityInfo = this.ruleEntityBiz.findBaseRuleEntityInfoById(itemInfo.getEntityId());
+                                RuleEntityInfo entityInfo = this.ruleEntityBiz.findBaseRuleEntityInfoById(itemInfo.getEntityId());
                                 //获取真是value表达式
                                 sb.append("$").append(entityInfo.getEntityIdentify()).append(".").append(RuleUtils.getMethodByProperty(itemInfo.getItemIdentify()));
                                 //将表达式 #3# * 5 替换成  order.setMoney(order.getMoney() * 5)

@@ -1,9 +1,9 @@
 package com.stu.drools.biz;
 
-import com.stu.drools.mapper.BaseRuleInfoMapper;
-import com.stu.drools.model.BaseRuleInfo;
-import com.stu.drools.model.BaseRulePropertyRelInfo;
-import com.stu.drools.model.BaseRuleSceneInfo;
+import com.stu.drools.mapper.RuleInfoMapper;
+import com.stu.drools.model.RuleInfo;
+import com.stu.drools.model.RulePropertyRelInfo;
+import com.stu.drools.model.RuleSceneInfo;
 import com.stu.drools.util.StringUtil;
 import org.springframework.stereotype.Service;
 
@@ -14,22 +14,22 @@ import java.util.List;
 public class RuleInfoBiz {
 
     @Resource
-    private BaseRuleInfoMapper baseRuleInfoMapper;
+    private RuleInfoMapper ruleInfoMapper;
     /**
      * Date 2017/7/26
      * Author lihao [lihao@sinosoft.com]
      * <p>
      * 方法说明: 根据场景获取对应的规则规则信息
      *
-     * @param baseRuleSceneInfo 参数
+     * @param ruleSceneInfo 参数
      */
-    public List<BaseRuleInfo> findBaseRuleListByScene(BaseRuleSceneInfo baseRuleSceneInfo) throws Exception {
-        if (null == baseRuleSceneInfo || (null == baseRuleSceneInfo.getSceneId() &&
-            StringUtil.strIsNull(baseRuleSceneInfo.getSceneIdentify()))) {
+    public List<RuleInfo> findBaseRuleListByScene(RuleSceneInfo ruleSceneInfo) throws Exception {
+        if (null == ruleSceneInfo || (null == ruleSceneInfo.getSceneId() &&
+            StringUtil.strIsNull(ruleSceneInfo.getSceneIdentify()))) {
             throw new NullPointerException("参数缺失！");
         }
 
-        return this.baseRuleInfoMapper.findBaseRuleListByScene(baseRuleSceneInfo);
+        return this.ruleInfoMapper.findBaseRuleListByScene(ruleSceneInfo);
     }
 
     /**
@@ -40,7 +40,7 @@ public class RuleInfoBiz {
      *
      * @param ruleId 参数
      */
-    public List<BaseRulePropertyRelInfo> findRulePropertyListByRuleId(final Long ruleId) throws Exception {
-        return this.baseRuleInfoMapper.findRulePropertyListByRuleId(ruleId);
+    public List<RulePropertyRelInfo> findRulePropertyListByRuleId(final Long ruleId) throws Exception {
+        return this.ruleInfoMapper.findRulePropertyListByRuleId(ruleId);
     }
 }

@@ -5,8 +5,10 @@ import com.github.pagehelper.PageInfo;
 import com.stu.drools.biz.RuleEntityBiz;
 import com.stu.drools.biz.RuleEntityItemBiz;
 import com.stu.drools.common.ObjectRestResponse;
-import com.stu.drools.model.BaseRuleEntityInfo;
-import com.stu.drools.model.BaseRuleEntityItemInfo;
+import com.stu.drools.model.RuleEntityInfo;
+import com.stu.drools.model.RuleEntityItemInfo;
+import com.stu.drools.util.ScanningFileUtil;
+import com.stu.drools.vo.ClassVo;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,13 +30,22 @@ public class EntityController {
     private RuleEntityItemBiz ruleEntityItemBiz;
 
     @PostMapping(value = "/page")
-    public ObjectRestResponse list(@RequestBody Map<String,Object> params){
+    public ObjectRestResponse page(@RequestBody Map<String,Object> params){
         ObjectRestResponse res = new ObjectRestResponse();
         PageInfo page = ruleEntityBiz.page(params);
         res.setData(page);
         res.setSuucessMsg("");
         return res;
     }
+    @PostMapping(value = "/list")
+    public ObjectRestResponse list(@RequestBody Map<String,Object> params){
+        ObjectRestResponse res = new ObjectRestResponse();
+        List<RuleEntityInfo> list = ruleEntityBiz.findBaseRuleEntityInfoList();
+        res.setData(list);
+        res.setSuucessMsg("查询成功");
+        return res;
+    }
+
     @PostMapping(value = "/get")
     public ObjectRestResponse get(@RequestBody Map<String,Object> params){
         ObjectRestResponse res = new ObjectRestResponse();
@@ -43,14 +54,16 @@ public class EntityController {
             res.setErrorMsg("参数缺失");
             return res;
         }
-        BaseRuleEntityInfo info = ruleEntityBiz.findBaseRuleEntityInfoById(id);
+        RuleEntityInfo info = ruleEntityBiz.findBaseRuleEntityInfoById(id);
         Map<String,Object> query = new HashMap<>();
         query.put("entityId",id);
-        List<BaseRuleEntityItemInfo> list =  ruleEntityItemBiz.listByParams(query);
+        List<RuleEntityItemInfo> list =  ruleEntityItemBiz.listByParams(query);
+        List<String> proList = ScanningFileUtil.getEntityFields(info.getEntityClazz());
 
         Map<String,Object> result = new HashMap<>();
         result.put("entity",info);
         result.put("entityItems",list);
+        result.put("proList",proList);
         res.setData(result);
         res.setSuucessMsg("");
         return res;
@@ -68,21 +81,22 @@ public class EntityController {
         res.setSuucessMsg("删除成功");
         return res;
     }
+
     @PostMapping(value = "/saveOrUpdate")
     public ObjectRestResponse saveOrUpdate(@RequestBody Map<String,Object> params){
         ObjectRestResponse res = new ObjectRestResponse();
         String info = (String) params.get("entity");
         String entityItems = (String) params.get("entityItems");
-        BaseRuleEntityInfo baseRuleEntityInfo = JSON.parseObject(info,BaseRuleEntityInfo.class);
-        Integer id = baseRuleEntityInfo.getEntityId();
-        if(null!= baseRuleEntityInfo.getEntityId()){
-            ruleEntityItemBiz.delInfoByEntityId(baseRuleEntityInfo.getEntityId());
+        RuleEntityInfo ruleEntityInfo = JSON.parseObject(info, RuleEntityInfo.class);
+        Integer id = ruleEntityInfo.getEntityId();
+        if(null!= ruleEntityInfo.getEntityId()){
+            ruleEntityItemBiz.delInfoByEntityId(ruleEntityInfo.getEntityId());
         }else{
-            id = ruleEntityBiz.saveOrUpdate(baseRuleEntityInfo);
+            id = ruleEntityBiz.saveOrUpdate(ruleEntityInfo);
         }
         if(StringUtils.isNotBlank(entityItems)){
-            List<BaseRuleEntityItemInfo> list = JSON.parseArray(entityItems,BaseRuleEntityItemInfo.class);
-            for(BaseRuleEntityItemInfo item:list){
+            List<RuleEntityItemInfo> list = JSON.parseArray(entityItems, RuleEntityItemInfo.class);
+            for(RuleEntityItemInfo item:list){
                 item.setItemId(null);
                 item.setEntityId(id);
                 ruleEntityItemBiz.saveOrUpdate(item);
@@ -90,6 +104,36 @@ public class EntityController {
         }
 
         res.setSuucessMsg("");
+        return res;
+    }
+
+
+    /* *
+     * 获取实体类
+     * @author ly
+     * @modifyTime 2020/10/21 8:40:00
+     */
+    @PostMapping(value = "/getEntitys")
+    public ObjectRestResponse getEntitys(@RequestBody Map<String,Object> params){
+        ObjectRestResponse res = new ObjectRestResponse();
+        List<ClassVo> list = ScanningFileUtil.addClass();
+        res.setData(list);
+        res.setSuucessMsg("查询成功");
+        return res;
+    }
+
+    /* *
+     * 获取实体类的属性
+     * @author ly
+     * @modifyTime 2020/10/21 8:43:00
+     */
+    @PostMapping(value = "/getEntityProperties")
+    public ObjectRestResponse getEntityProperties(@RequestBody Map<String,Object> params){
+        String clsName = (String) params.get("className");
+        ObjectRestResponse res = new ObjectRestResponse();
+        List<String> list = ScanningFileUtil.getEntityFields(clsName);
+        res.setData(list);
+        res.setSuucessMsg("查询成功");
         return res;
     }
 }

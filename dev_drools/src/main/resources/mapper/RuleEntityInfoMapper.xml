@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.stu.drools.mapper.RuleEntityInfoMapper">
+    <sql id="BaseFindColumnSql">
+            T.ENTITY_ID,
+            T.ENTITY_NAME,
+            T.ENTITY_DESC,
+            T.ENTITY_IDENTIFY,
+            T.PKG_NAME,
+            T.CRE_USER_ID,
+            T.CRE_TIME,
+            T.IS_EFFECT,
+            T.REMARK
+    </sql>
+
+    <select id="findBaseRuleEntityInfoById" resultType="com.stu.drools.model.RuleEntityInfo">
+        SELECT DISTINCT
+        <include refid="BaseFindColumnSql"></include>
+        FROM
+        RULE_ENTITY_INFO T
+        WHERE 1=1
+        AND T.ENTITY_ID = #{id}
+    </select>
+
+    <delete id="deleteBaseRuleEntityInfoById">
+       delete
+        FROM
+        RULE_ENTITY_INFO T
+        WHERE 1=1
+        AND T.ENTITY_ID = #{id}
+    </delete>
+
+    <insert id="add" parameterType="com.stu.drools.model.RuleEntityInfo"
+            useGeneratedKeys="true" keyColumn="entity_id" keyProperty="entityId">
+        insert into RULE_ENTITY_INFO
+        (
+                ENTITY_NAME,
+                ENTITY_DESC,
+                ENTITY_IDENTIFY,
+                PKG_NAME,
+                CRE_USER_ID,
+                CRE_TIME,
+                IS_EFFECT,
+                REMARK)
+            values(
+                #{entityName},
+                #{entityDesc},
+                #{entityIdentify},
+                #{pkgName},
+                #{creUserId},
+                #{creTime},
+                #{isEffect},
+                #{remark}
+                )
+        <selectKey resultType="int" keyProperty="entityId" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+</mapper>

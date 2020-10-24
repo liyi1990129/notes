@@ -2,9 +2,12 @@ package com.stu.drools.rest;
 
 import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageInfo;
+import com.stu.drools.biz.RuleInfoBiz;
 import com.stu.drools.biz.RuleSceneBiz;
 import com.stu.drools.common.ObjectRestResponse;
 import com.stu.drools.model.RuleEntityInfo;
+import com.stu.drools.model.RuleInfo;
+import com.stu.drools.model.RulePropertyRelInfo;
 import com.stu.drools.model.RuleSceneInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,16 +20,16 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping(value = "/scene")
-public class SceneController {
+@RequestMapping(value = "/rule")
+public class RuleController {
 
     @Autowired
-    private RuleSceneBiz ruleSceneBiz;
+    private RuleInfoBiz ruleInfoBiz;
 
     @PostMapping(value = "/page")
     public ObjectRestResponse list(@RequestBody Map<String,Object> params){
         ObjectRestResponse res = new ObjectRestResponse();
-        PageInfo page = ruleSceneBiz.page(params);
+        PageInfo page = ruleInfoBiz.page(params);
         res.setData(page);
         res.setSuucessMsg("");
         return res;
@@ -40,11 +43,15 @@ public class SceneController {
             return res;
         }
 
-        RuleSceneInfo info = ruleSceneBiz.getInfoById(id);
-        List<RuleEntityInfo> list = ruleSceneBiz.findBaseRuleEntityListByScene(info);
+        //规则信息
+        RuleInfo info = ruleInfoBiz.getInfoById(id);
+
+        //规则关联的属性信息
+        List<RulePropertyRelInfo> relList = ruleInfoBiz.findRulePropertyListByRuleId(id);
         Map<String,Object> result = new HashMap<>();
         result.put("info",info);
-        result.put("list",list);
+        result.put("relList",relList);
+
         res.setSuucessMsg("");
         res.setData(result);
         return res;
@@ -57,21 +64,25 @@ public class SceneController {
             res.setErrorMsg("参数缺失");
             return res;
         }
-        ruleSceneBiz.delInfoById(id);
+        ruleInfoBiz.delInfoById(id);
         res.setSuucessMsg("删除成功");
         return res;
     }
     @PostMapping(value = "/saveOrUpdate")
     public ObjectRestResponse saveOrUpdate(@RequestBody Map<String,Object> params){
         ObjectRestResponse res = new ObjectRestResponse();
-        String info = (String) params.get("scene");
-        String entitys = (String) params.get("entitys");
-        RuleSceneInfo ruleSceneInfo = JSON.parseObject(info, RuleSceneInfo.class);
-        Long id = ruleSceneInfo.getSceneId();
-        if(ruleSceneInfo.getSceneId()==null){
-            id = ruleSceneBiz.saveOrUpdate(ruleSceneInfo);
+        String info = (String) params.get("rule");
+        String relInfo = (String) params.get("relList");
+        RuleInfo ruleInfo = JSON.parseObject(info, RuleInfo.class);
+
+        List<RulePropertyRelInfo> rulePropertyRelInfos = JSON.parseArray(relInfo,RulePropertyRelInfo.class);
+        Long id = ruleInfo.getRuleId();
+
+        if(ruleInfo.getRuleId()==null){
+            id = ruleInfoBiz.saveOrUpdate(ruleInfo);
         }else{
-            ruleSceneBiz.delRelInfoById(id);
+            this.ruleInfoBiz.delRelByRuleId(id);
+
         }
 
 

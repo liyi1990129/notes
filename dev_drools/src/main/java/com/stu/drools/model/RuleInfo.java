@@ -1,13 +1,12 @@
 package com.stu.drools.model;
 
+import javax.persistence.Id;
+
 /**
  * 描述：
- * CLASSPATH: com.stu.drools.model.BaseRuleInfo
- * VERSION:   1.0
- * Created by lihao
- * DATE:      2017/7/25
  */
 public class RuleInfo extends BaseModel {
+    @Id
     private Long ruleId;//主键
     private Long sceneId;//场景
     private String ruleName;//名称

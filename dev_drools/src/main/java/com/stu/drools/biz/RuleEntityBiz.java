@@ -56,10 +56,10 @@ public class RuleEntityBiz {
      *
      * @param id 实体id
      */
-    public RuleEntityInfo findBaseRuleEntityInfoById(Integer id)  {
+    public RuleEntityInfo findBaseRuleEntityInfoById(Long id)  {
         return this.ruleEntityInfoMapper.findBaseRuleEntityInfoById(id);
     }
-    public void delEntityInfoById(Integer id)  {
+    public void delEntityInfoById(Long id)  {
         Example example = new Example(RuleEntityInfo.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("entityId",id);
@@ -67,7 +67,7 @@ public class RuleEntityBiz {
     }
 
 
-    public int saveOrUpdate(RuleEntityInfo info){
+    public Long saveOrUpdate(RuleEntityInfo info){
         if(null== info.getEntityId()){
             info.setCreTime(new Date());
             info.setCreUserId(new Long(1));

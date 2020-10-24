@@ -15,9 +15,6 @@
 package com.stu.drools.common;
 
 /**
- * Created by jiangwy on 2019/8/23.
- * @author 蒋万勇
- * @version  2019/8/23.
  */
 public class RestCodeConstants {
     /** 请求成功返回值 - 0  **/

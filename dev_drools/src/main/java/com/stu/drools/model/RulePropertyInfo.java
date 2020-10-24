@@ -1,16 +1,14 @@
 package com.stu.drools.model;
 
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
  * 描述：
- * CLASSPATH: com.stu.drools.model.BaseRulePropertyInfo
- * VERSION:   1.0
- * Created by lihao
- * DATE:      2017/7/25
  */
 @Table(name = "rule_property_info")
 public class RulePropertyInfo extends BaseModel{
+    @Id
     private Long rulePropertyId;//主键
     private String rulePropertyIdentify;//标识
     private String rulePropertyName;//名称

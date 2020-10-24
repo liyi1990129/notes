@@ -49,7 +49,7 @@ public class EntityController {
     @PostMapping(value = "/get")
     public ObjectRestResponse get(@RequestBody Map<String,Object> params){
         ObjectRestResponse res = new ObjectRestResponse();
-        Integer id = (Integer) params.get("id");
+        Long id = (Long) params.get("id");
         if(null==id){
             res.setErrorMsg("参数缺失");
             return res;
@@ -71,7 +71,7 @@ public class EntityController {
     @PostMapping(value = "/del")
     public ObjectRestResponse del(@RequestBody Map<String,Object> params){
         ObjectRestResponse res = new ObjectRestResponse();
-        Integer id = (Integer) params.get("id");
+        Long id = (Long) params.get("id");
         if(null==id){
             res.setErrorMsg("参数缺失");
             return res;
@@ -88,7 +88,7 @@ public class EntityController {
         String info = (String) params.get("entity");
         String entityItems = (String) params.get("entityItems");
         RuleEntityInfo ruleEntityInfo = JSON.parseObject(info, RuleEntityInfo.class);
-        Integer id = ruleEntityInfo.getEntityId();
+        Long id = ruleEntityInfo.getEntityId();
         if(null!= ruleEntityInfo.getEntityId()){
             ruleEntityItemBiz.delInfoByEntityId(ruleEntityInfo.getEntityId());
         }else{

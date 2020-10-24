@@ -7,10 +7,6 @@ import java.util.List;
 
 /**
  * 描述：字符串工具
- * CLASSPATH: util.StringUtil
- * VERSION:   1.0
- * Created by lihao
- * DATE:      2016/12/29
  */
 public class StringUtil {
 
@@ -18,8 +14,6 @@ public class StringUtil {
      * @param list 要进行判断的数据集合
      * @return 不为空返回true，为空返回false
      * 方法说明：判断list集合是否为空
-     * date:2016-12-29
-     * author:lihao
      */
     public static boolean listIsNotNull(List list) {
         return ((null != list) && (list.size() > 0));
@@ -29,17 +23,12 @@ public class StringUtil {
      * @param src 要进行判断的字符串
      * @return 为空返回true，不为空为false
      * 方法说明：判断字符串是否为空
-     * date:2016-12-29
-     * author:lihao
      */
     public static boolean strIsNull(String src) {
         return (null == src) || "null".equals(src) || (src.trim().length() <= 0) || "".equals(src);
     }
 
     /**
-     * Date 2017/1/4
-     * Author lihao [lihao@sinosoft.com]
-     * <p>
      * 方法说明: 判断字符串是否不为空
      *
      * @param src 要进行判断的字符串
@@ -51,9 +40,6 @@ public class StringUtil {
     }
 
     /**
-     * Date 2017/1/3
-     * Author lihao [lihao@sinosoft.com]
-     * <p>
      * 方法说明: 将字符串转换为指定类型的list集合
      *
      * @param str   要转换的字符串
@@ -74,9 +60,6 @@ public class StringUtil {
 
 
     /**
-     * Date 2017/3/25
-     * Author lihao [lihao@sinosoft.com]
-     * <p>
      * 方法说明: 根据日期获取当前年份
      *
      * @param date 日期

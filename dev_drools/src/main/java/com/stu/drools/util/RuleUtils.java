@@ -7,10 +7,6 @@ import java.util.regex.Pattern;
 
 /**
  * 描述：规则工具类
- * CLASSPATH: com.stu.drools.util.RuleUtils
- * VERSION:   1.0
- * Created by lihao
- * DATE:      2017/7/26
  */
 public class RuleUtils {
 
@@ -30,9 +26,6 @@ public class RuleUtils {
     }
 
     /**
-     * Date 2017/7/26
-     * Author lihao [lihao@sinosoft.com]
-     * <p>
      * 方法说明: 截取两个$之间的内容
      *
      * @param str 字符串
@@ -48,9 +41,6 @@ public class RuleUtils {
     }
 
     /**
-     * Date 2017/7/27
-     * Author lihao [lihao@sinosoft.com]
-     * <p>
      * 方法说明:截取两个@之间的内容
      */
     public static List<String> getValueBetweenChar(String str) {
@@ -64,9 +54,6 @@ public class RuleUtils {
     }
 
     /**
-     * Date 2017/7/27
-     * Author lihao [lihao@sinosoft.com]
-     * <p>
      * 方法说明: 截取两个#之间的内容
      */
     public static List<String> getActionParamBetweenChar(String str) {
@@ -79,9 +66,6 @@ public class RuleUtils {
     }
 
     /**
-     * Date 2017/7/27
-     * Author lihao [lihao@sinosoft.com]
-     * <p>
      * 方法说明: 截取两个#之间的内容
      */
     public static String getParamBetweenChar(String str, String charStr) {
@@ -94,9 +78,6 @@ public class RuleUtils {
     }
 
     /**
-     * Date 2017/7/27
-     * Author lihao [lihao@sinosoft.com]
-     * <p>
      * 方法说明: 如果是整数或者小数，则返回true，否则返回false
      */
     public static boolean checkStyleOfString(String str) {
@@ -104,9 +85,6 @@ public class RuleUtils {
     }
 
     /**
-     * Date 2017/7/27
-     * Author lihao [lihao@sinosoft.com]
-     * <p>
      * 方法说明:得到 > >= < <= == != 后面的字符串
      */
     public static String getConditionOfVariable(String str) {
@@ -119,9 +97,6 @@ public class RuleUtils {
     }
 
     /**
-     * Date 2017/7/27
-     * Author lihao [lihao@sinosoft.com]
-     * <p>
      * 方法说明:检查是否包含 + - × / % 如果包含返回true
      */
     public static boolean checkContainOfOperator(String str) {
@@ -130,9 +105,6 @@ public class RuleUtils {
     }
 
     /**
-     * Date 2017/7/27
-     * Author lihao [lihao@sinosoft.com]
-     * <p>
      * 方法说明:判断当前字符串是否包含 特殊字符 信息,如果包含返回true
      */
     public static boolean checkContainOfOperator(String str, String charStr) {
@@ -140,9 +112,6 @@ public class RuleUtils {
     }
 
     /**
-     * Date 2017/7/27
-     * Author lihao [lihao@sinosoft.com]
-     * <p>
      * 方法说明: 根据属性得到其get方法名
      */
     public static String getMethodByProperty(String property) {
@@ -156,9 +125,6 @@ public class RuleUtils {
     }
 
     /**
-     * Date 2017/7/27
-     * Author lihao [lihao@sinosoft.com]
-     * <p>
      * 方法说明: 根据属性得到其set方法名
      */
     public static String setMethodByProperty(String property) {

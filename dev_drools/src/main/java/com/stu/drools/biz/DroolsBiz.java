@@ -161,9 +161,6 @@ public class DroolsBiz {
     }
 
     /**
-     * Date 2017/7/26
-     * Author lihao [lihao@sinosoft.com]
-     * <p>
      * 方法说明: 插入规则表达式的import部分
      *
      * @param droolRuleStr 规则串
@@ -208,9 +205,6 @@ public class DroolsBiz {
 
 
     /**
-     * Date 2017/7/26
-     * Author lihao [lihao@sinosoft.com]
-     * <p>
      * 方法说明: 组装规则信息
      *
      * @param ruleInfo 规则
@@ -230,9 +224,6 @@ public class DroolsBiz {
 
 
     /**
-     * Date 2017/7/26
-     * Author lihao [lihao@sinosoft.com]
-     * <p>
      * 方法说明: 根据规则拼接规则自身相关的属性信息
      *
      * @param ruleStr  规则字符串
@@ -258,9 +249,6 @@ public class DroolsBiz {
 
 
     /**
-     * Date 2017/7/26
-     * Author lihao [lihao@sinosoft.com]
-     * <p>
      * 方法说明: 拼接规则条件信息
      *
      * @param ruleStr  规则字符串
@@ -290,9 +278,6 @@ public class DroolsBiz {
     }
 
     /**
-     * Date 2017/7/27
-     * Author lihao [lihao@sinosoft.com]
-     * <p>
      * 方法说明: 处理条件部分内容
      *
      * @param ruleStr 规则串
@@ -303,7 +288,7 @@ public class DroolsBiz {
         //只保存条件内容
         StringBuilder sb = new StringBuilder();
         //实体id
-        Integer entityId = null;
+        Long entityId = null;
         //默认或的关系
         String relation = "&&";
         //TODO 暂时先按照多个条件处理（目前只实现&&关系条件）

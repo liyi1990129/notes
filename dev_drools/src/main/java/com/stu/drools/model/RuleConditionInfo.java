@@ -1,13 +1,12 @@
 package com.stu.drools.model;
 
+import javax.persistence.Id;
+
 /**
  * 描述：
- * CLASSPATH: com.stu.drools.model.BaseRuleConditionInfo
- * VERSION:   1.0
- * Created by lihao
- * DATE:      2017/7/24
  */
 public class RuleConditionInfo extends BaseModel {
+    @Id
     private Long conditionId;//主键
     private Long ruleId;//规则id
     private String conditionName;//条件名称

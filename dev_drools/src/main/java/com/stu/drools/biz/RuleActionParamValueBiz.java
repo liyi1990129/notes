@@ -12,9 +12,6 @@ public class RuleActionParamValueBiz {
     private RuleActionParamValueInfoMapper ruleActionParamValueInfoMapper;
 
     /**
-     * Date 2017/7/27
-     * Author lihao [lihao@sinosoft.com]
-     * <p>
      * 方法说明: 根据参数id获取参数value
      *
      * @param paramId 参数id

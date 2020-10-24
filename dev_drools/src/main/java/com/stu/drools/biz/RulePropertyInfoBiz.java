@@ -27,5 +27,10 @@ public class RulePropertyInfoBiz {
         return pageInfo;
     }
 
+    public List<RulePropertyInfo> findList(RulePropertyInfo info){
+        List<RulePropertyInfo> list = this.rulePropertyInfoMapper.select(info);
+        return list;
+    }
+
 
 }

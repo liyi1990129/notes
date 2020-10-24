@@ -18,10 +18,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 描述：
- * CLASSPATH: com.stu.drools.util.DroolsUtil
- * VERSION:   1.0
- * Created by lihao
- * DATE:      2017/7/25
  */
 public class DroolsUtil {
 
@@ -42,9 +38,6 @@ public class DroolsUtil {
     }
 
     /**
-     * Date 2017/7/25
-     * Author lihao [lihao@sinosoft.com]
-     * <p>
      * 方法说明:根据规则字符串重新编译规则，并将编译后的KieBase存入缓存
      *
      * @param rule  规则字符串
@@ -81,9 +74,6 @@ public class DroolsUtil {
     }
 
     /**
-     * Date 2017/7/25
-     * Author lihao [lihao@sinosoft.com]
-     * <p>
      * 方法说明: 加载drl文件(暂不使用)
      *
      * @param filePath 规则文件路径
@@ -119,9 +109,6 @@ public class DroolsUtil {
     }
 
     /**
-     * Date 2017/7/25
-     * Author lihao [lihao@sinosoft.com]
-     * <p>
      * 方法说明: 根据场景获取缓存中的kbase,然后创建session，如果返回null，则表示缓存中没有
      *
      * @param scene 场景标识
@@ -142,9 +129,6 @@ public class DroolsUtil {
     }
 
     /**
-     * Date 2017/7/25
-     * Author lihao [lihao@sinosoft.com]
-     * <p>
      * 方法说明:根据规则字符串重新编译规则，验证规则是否正确
      *
      * @param rule 规则字符串
@@ -168,9 +152,6 @@ public class DroolsUtil {
 
 
     /**
-     * Date 2017/7/25
-     * Author lihao [lihao@sinosoft.com]
-     * <p>
      * 方法说明: 移除对应的规则（供其它部分调用，比如规则的修改和删除）
      *
      * @param key 场景标识
@@ -180,9 +161,6 @@ public class DroolsUtil {
     }
 
     /**
-     * Date 2017/7/25
-     * Author lihao [lihao@sinosoft.com]
-     * <p>
      * 方法说明: 清空规则缓存
      */
     public static void clearRuleMap() {

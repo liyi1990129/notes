@@ -8,27 +8,23 @@ import javax.persistence.Table;
 
 /**
  * 描述：
- * CLASSPATH: com.stu.drools.model.BaseRuleEntityInfo
- * VERSION:   1.0
- * Created by lihao
- * DATE:      2017/7/20
  */
 @Table(name = "rule_entity_info")
 public class RuleEntityInfo extends BaseModel {
     @Id
     @Column(name = "ENTITY_ID")
-    private Integer entityId;//主键
+    private Long entityId;//主键
 
     private String entityName;//名称
     private String entityDesc;//描述
     private String entityIdentify;//标识
     private String pkgName;//实体包路径
 
-    public Integer getEntityId() {
+    public Long getEntityId() {
         return entityId;
     }
 
-    public void setEntityId(Integer entityId) {
+    public void setEntityId(Long entityId) {
         this.entityId = entityId;
     }
 

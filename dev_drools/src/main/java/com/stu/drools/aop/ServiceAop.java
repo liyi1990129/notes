@@ -9,10 +9,6 @@ import org.springframework.stereotype.Component;
 
 /**
  * 描述：
- * CLASSPATH: com.stu.drools.aop.ServiceAop
- * VERSION:   1.0
- * Created by lihao
- * DATE:      2017/7/20
  */
 @Aspect
 @Component

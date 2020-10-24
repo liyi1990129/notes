@@ -15,9 +15,6 @@ public class RuleSceneEntityRelBiz {
     private RuleSceneEntityRelInfoMapper ruleSceneEntityRelInfoMapper;
 
     /**
-     * Date 2017/7/26
-     * Author lihao [lihao@sinosoft.com]
-     * <p>
      * 方法说明: 根据场景信息获取相关的实体信息
      *
      * @param ruleSceneInfo 参数

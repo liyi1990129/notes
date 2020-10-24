@@ -8,10 +8,6 @@ import java.util.Map;
 
 /**
  * 描述：
- * CLASSPATH: com.stu.drools.util.SpringContextHolder
- * VERSION:   1.0
- * Created by lihao
- * DATE:      2017/7/27
  */
 @Component
 public class SpringContextHolder implements ApplicationContextAware {

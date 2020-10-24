@@ -13,9 +13,6 @@ public class RuleConditionBiz {
     private RuleConditionInfoMapper ruleConditionInfoMapper;
 
     /**
-     * Date 2017/7/26
-     * Author lihao [lihao@sinosoft.com]
-     * <p>
      * 方法说明: 根据规则id获取规则条件信息
      *
      * @param ruleId 规则id

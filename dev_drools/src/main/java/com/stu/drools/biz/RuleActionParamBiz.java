@@ -13,9 +13,6 @@ public class RuleActionParamBiz {
     private RuleActionParamInfoMapper ruleActionParamInfoMapper;
 
     /**
-     * Date 2017/7/24
-     * Author lihao [lihao@sinosoft.com]
-     * <p>
      * 方法说明: 根据动作id获取动作参数信息
      *
      * @param actionId 参数

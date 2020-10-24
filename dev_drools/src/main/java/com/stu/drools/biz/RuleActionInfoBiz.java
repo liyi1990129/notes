@@ -14,9 +14,6 @@ public class RuleActionInfoBiz {
     @Resource
     private RuleActionInfoMapper ruleActionInfoMapper;
     /**
-     * Date 2017/7/26
-     * Author lihao [lihao@sinosoft.com]
-     * <p>
      * 方法说明: 根据场景获取所有的动作信息
      *
      * @param sceneInfo 参数
@@ -30,9 +27,6 @@ public class RuleActionInfoBiz {
     }
 
     /**
-     * Date 2017/7/26
-     * Author lihao [lihao@sinosoft.com]
-     * <p>
      * 方法说明: 查询是否有实现类的动作
      *
      * @param ruleId 规则id
@@ -45,9 +39,6 @@ public class RuleActionInfoBiz {
     }
 
     /**
-     * Date 2017/7/26
-     * Author lihao [lihao@sinosoft.com]
-     * <p>
      * 方法说明: 根据规则id获取动作集合
      *
      * @param ruleId 参数

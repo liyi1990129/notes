@@ -5,10 +5,6 @@ import java.util.Date;
 
 /**
  * 描述：
- * CLASSPATH: com.stu.drools.model.BaseModel
- * VERSION:   1.0
- * Created by lihao
- * DATE:      2017/7/20
  */
 public class BaseModel implements Serializable {
     //创建人

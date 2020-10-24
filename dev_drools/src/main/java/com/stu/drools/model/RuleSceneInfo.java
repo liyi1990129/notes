@@ -6,26 +6,22 @@ import javax.persistence.Table;
 
 /**
  * 描述：
- * CLASSPATH: com.stu.drools.model.BaseRuleSceneInfo
- * VERSION:   1.0
- * Created by lihao
- * DATE:      2017/7/20
  */
 @Table(name = "rule_scene_info")
 public class RuleSceneInfo extends BaseModel {
     @Id
     @Column(name = "SCENE_ID")
-    private Integer sceneId;//主键
+    private Long sceneId;//主键
     private String sceneIdentify;//标识
     private Integer sceneType;//类型
     private String sceneName;//名称
     private String sceneDesc;//描述
 
-    public Integer getSceneId() {
+    public Long getSceneId() {
         return sceneId;
     }
 
-    public void setSceneId(Integer sceneId) {
+    public void setSceneId(Long sceneId) {
         this.sceneId = sceneId;
     }
 

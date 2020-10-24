@@ -55,7 +55,7 @@ public class RuleSceneBiz {
      * @author ly
      * @modifyTime 2020/10/22 16:36:00
      */
-    public void delInfoById(Integer id) {
+    public void delInfoById(Long id) {
         Example example = new Example(RuleSceneInfo.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("sceneId", id);
@@ -69,7 +69,7 @@ public class RuleSceneBiz {
      * @author ly
      * @modifyTime 2020/10/22 16:36:00
      */
-    public void delRelInfoById(Integer id) {
+    public void delRelInfoById(Long id) {
         Example example = new Example(RuleSceneEntityRelInfo.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("sceneId", id);
@@ -81,7 +81,7 @@ public class RuleSceneBiz {
      * @author ly
      * @modifyTime 2020/10/22 16:37:00
      */
-    public RuleSceneInfo getInfoById(Integer id) {
+    public RuleSceneInfo getInfoById(Long id) {
         RuleSceneInfo info = new RuleSceneInfo();
         info.setSceneId(id);
         return this.ruleSceneInfoMapper.selectOne(info);
@@ -93,7 +93,7 @@ public class RuleSceneBiz {
      * @author ly
      * @modifyTime 2020/10/22 16:37:00
      */
-    public Integer saveOrUpdate(RuleSceneInfo info) {
+    public Long saveOrUpdate(RuleSceneInfo info) {
         if (null == info.getSceneId()) {
             info.setCreTime(new Date());
             info.setCreUserId(new Long(1));

@@ -1,13 +1,12 @@
 package com.stu.drools.model;
 
+import javax.persistence.Id;
+
 /**
  * 描述：
- * CLASSPATH: com.stu.drools.model.BaseRuleActionParamInfo
- * VERSION:   1.0
- * Created by lihao
- * DATE:      2017/7/24
  */
 public class RuleActionParamInfo extends BaseModel {
+    @Id
     private Long actionParamId;//主键
     private Long actionId;//动作id
     private String actionParamName;//参数名称

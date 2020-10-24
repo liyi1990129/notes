@@ -16,7 +16,6 @@ package com.stu.drools.common;
 
 
 /**
- * Created by jiangwy on 2019/8/9.
  */
 public class BaseResponse {
     private int resultCode = RestCodeConstants.RESULT_SUCCESS;

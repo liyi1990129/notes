@@ -1,22 +1,8 @@
-/********************************************************************************
- * <b>Summary: </b>
- * 文件名：ObjectRestResponse.java
- * 版本信息：$Rev: 1.0.0 $
- * 日期：2019-09-08
- * Copyright (c) 2005, 2019 www.sunline.cn  
- * 版权所有
- * Licensed under the SUNLINE, Version 20190616 (the "License");
- * [History]
- * Version   Date       Author     				Content
- * -------- --------- ---------- ----------------------------
- * 1.0.0   2019-09-08   蒋万勇(QQ:272389138)    $1.0.0$
- ********************************************************************************/
 
 package com.stu.drools.common;
 
 /**
- * Created by jiangwy on 2019/9/8.
- * 
+ *
  案例数据：
  {
     "data":[

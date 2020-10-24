@@ -53,7 +53,7 @@ public class RuleEntityItemBiz {
         criteria.andEqualTo("itemId",id);
         this.ruleEntityItemInfoMapper.deleteByExample(example);
     }
-    public void delInfoByEntityId(Integer entityId)  {
+    public void delInfoByEntityId(Long entityId)  {
         Example example = new Example(RuleEntityItemInfo.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("entityId",entityId);

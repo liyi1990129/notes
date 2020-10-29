@@ -176,7 +176,7 @@
 
         if (this.dataForm.id) {
           let params = {
-            id: this.dataForm.id
+            id: this.dataForm.id + ''
           }
           getInfo(params).then(res => {
             if (res.data.data && res.data.resultCode === 0) {

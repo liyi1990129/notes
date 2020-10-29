@@ -48,6 +48,10 @@ public class RuleEntityBiz {
         return this.ruleEntityInfoMapper.selectAll();
     }
 
+    public List<RuleEntityInfo> list(RuleEntityInfo info)  {
+        return this.ruleEntityInfoMapper.select(info);
+    }
+
     /**
      * Date 2017/7/26
      * Author lihao [lihao@sinosoft.com]

@@ -26,14 +26,5 @@
         </if>
 
     </select>
-    <select id="findRuleActionParamByActionId" resultType="com.stu.drools.model.RuleActionParamInfo">
-        SELECT DISTINCT
-        <include refid="BaseFindParamSql"></include>
-        FROM
-        RULE_ACTION_PARAM_INFO T
-        WHERE
-        1 = 1
-        AND T.IS_EFFECT = 1
-        AND T.ACTION_ID = #{actionId}
-    </select>
+
 </mapper>

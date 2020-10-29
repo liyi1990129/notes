@@ -1,12 +1,16 @@
 package com.stu.drools.model;
 
+import javax.persistence.Column;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * 描述：
  */
+@Table(name = "RULE_ACTION_RULE_REL")
 public class RuleActionRuleRelInfo extends BaseModel {
     @Id
+    @Column(name = "RULE_ACTION_REL_ID")
     private Long ruleActionRelId;//主键
     private Long actionId;//动作
     private Long ruleId;//规则

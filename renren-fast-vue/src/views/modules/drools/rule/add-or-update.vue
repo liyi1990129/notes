@@ -7,29 +7,37 @@
 
       <el-row>
         <el-col :span="12">
-          <el-form-item label="模型标识" prop="entityIdentify">
-            <el-select v-model="dataForm.entityIdentify" filterable placeholder="请选择">
+          <el-form-item label="所属场景" prop="sceneId">
+            <el-select v-model="dataForm.sceneId" filterable placeholder="请选择">
               <el-option
-                v-for="item in entitys"
-                :key="item.name"
-                :label="item.name"
-                :value="item.name"
-                @click.native="changeEntity(item)">
+                v-for="item in sceneListData"
+                :key="item.sceneId"
+                :label="item.sceneName"
+                :value="item.sceneId"
+                @click.native="changeScene(item)">
               </el-option>
             </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="模型名称" prop="entityName">
-            <el-input v-model="dataForm.entityName" placeholder="模型名称"></el-input>
+          <el-form-item label="规则名称" prop="ruleName">
+            <el-input v-model="dataForm.ruleName" placeholder="模型名称"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
 
       <el-row>
         <el-col :span="12">
-          <el-form-item label="包路径" prop="pkgName">
-            <el-input v-model="dataForm.pkgName" placeholder="包路径"></el-input>
+          <el-form-item label="是否启用" prop="pkgName">
+            <el-switch
+              v-model="dataForm.ruleEnabled"
+              active-color="#13ce66"
+              inactive-color="#ff4949"
+              active-value="1"
+              active-text="是"
+              inactive-text="否"
+              inactive-value="0">
+            </el-switch>
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -46,6 +54,9 @@
           </el-form-item>
         </el-col>
       </el-row>
+      <el-form-item  label="描述" prop="ruleDesc">
+        <el-input v-model="dataForm.ruleDesc" placeholder="描述"></el-input>
+      </el-form-item>
       <el-form-item  label="备注" prop="remark">
         <el-input  type="textarea"  :rows="2" v-model="dataForm.remark" placeholder="备注"></el-input>
       </el-form-item>
@@ -67,20 +78,20 @@
         border
         style="width: 100%">
         <el-table-column
-          prop="itemIdentify"
+          prop="rulePropertyId"
           label="属性标识"
           width="180">
           <template slot-scope="scope">
             <el-form-item
-              :rules="itemRule.itemIdentify"
-              :prop="'itemData.'+scope.$index+'.itemIdentify'"
+              :rules="itemRule.rulePropertyId"
+              :prop="'itemData.'+scope.$index+'.rulePropertyId'"
             >
-            <el-select v-model="scope.row.itemIdentify" filterable placeholder="请选择">
+            <el-select v-model="scope.row.rulePropertyId" filterable placeholder="请选择">
               <el-option
-                v-for="item in entitysProperties"
-                :key="item"
-                :label="item"
-                :value="item"
+                v-for="item in ruleProperties"
+                :key="item.rulePropertyId"
+                :label="item.rulePropertyIdentify"
+                :value="item.rulePropertyId"
                 @click.native="changeEntityItem(item,scope.row)">
               </el-option>
             </el-select>
@@ -88,25 +99,25 @@
           </template>
         </el-table-column>
         <el-table-column
-          prop="itemName"
+          prop="rulePropertyName"
           label="属性名称"
           width="180">
           <template slot-scope="scope">
             <el-form-item
-              :rules="itemRule.itemName"
-              :prop="'itemData.'+scope.$index+'.itemName'"
+              :rules="itemRule.rulePropertyName"
+              :prop="'itemData.'+scope.$index+'.rulePropertyName'"
             >
-            <el-input v-model="scope.row.itemName" placeholder="属性名称"></el-input>
+            <el-input v-model="scope.row.rulePropertyName" disabled placeholder="属性名称"></el-input>
             </el-form-item>
           </template>
         </el-table-column>
 
         <el-table-column
-          prop="itemDesc"
-          label="属性描述">
+          prop="rulePropertyValue"
+          label="属性值">
           <template slot-scope="scope">
             <el-form-item class="tb-colum">
-              <el-input v-model="scope.row.itemDesc" placeholder="属性描述"></el-input>
+              <el-input v-model="scope.row.rulePropertyValue" placeholder="属性描述"></el-input>
             </el-form-item>
           </template>
         </el-table-column>
@@ -128,11 +139,12 @@
 </template>
 
 <script>
-  import { getEntitys, getEntityProperties, saveOrUpdate, getInfo } from '@/api/entity'
+  import { sceneList, propertyList, saveOrUpdate, getInfo } from '@/api/rule'
 
   export default {
     data () {
       return {
+        sceneListData: [],
         visible: false,
         dataForm: {
           id: 0,
@@ -144,30 +156,33 @@
           isEffect: 1
         },
         entitys: [],
-        entitysProperties: [],
+        ruleProperties: [],
         dataRule: {
-          entityName: [
-            { required: true, message: '模型名称不能为空', trigger: 'blur' }
+          ruleName: [
+            { required: true, message: '规则名称不能为空', trigger: 'blur' }
           ],
-          entityIdentify: [
-            { required: true, message: '模型标识不能为空', trigger: 'change' }
+          sceneId: [
+            { required: true, message: '所属场景不能为空', trigger: 'change' }
           ]
         },
         itemDataForm: {
           itemData: []
         },
         itemRule: {
-          itemName: [
+          rulePropertyValue: [
+            { required: true, message: '属性值不能为空', trigger: 'blur' }
+          ],
+          rulePropertyName: [
             { required: true, message: '属性名称不能为空', trigger: 'blur' }
           ],
-          itemIdentify: [
-            { required: true, message: '属性标识不能为空', trigger: 'change' }
+          rulePropertyId: [
+            { required: true, message: '规则属性不能为空', trigger: 'change' }
           ]
         }
       }
     },
     created () {
-      this.getEntityCls()
+      this.initScene()
     },
     methods: {
       init (id) {
@@ -176,54 +191,39 @@
 
         if (this.dataForm.id) {
           let params = {
-            id: this.dataForm.id
+            id: this.dataForm.id + ''
           }
           getInfo(params).then(res => {
             if (res.data.data && res.data.resultCode === 0) {
-              this.dataForm = res.data.data.entity
-              this.itemDataForm.itemData = res.data.data.entityItems
-              this.entitysProperties = res.data.data.proList
+              this.dataForm = res.data.data.info
+              this.itemDataForm.itemData = res.data.data.relList
             }
           })
         }
       },
-
-      // 实体类改变
-      changeEntity (item) {
-        this.dataForm.entityIdentify = item.name
-        this.dataForm.pkgName = item.className
-        this.entitysProperties = []
-        this.itemData = []
-        this.getEntityProperties()
-      },
-
-      // 获取实体类列表
-      getEntityCls () {
-        getEntitys({}).then(res => {
-          if (res.data.data) {
-            this.entitys = res.data.data
-          }
-        })
-      },
-
-      // 获取实体类的属性
-      getEntityProperties () {
+      initScene () {
         let params = {
-          className: this.dataForm.pkgName
+          isEffect: 1
         }
-        getEntityProperties(params).then(res => {
-          if (res.data.data) {
-            this.entitysProperties = res.data.data
-          }
+        sceneList(params).then(res => {
+          this.sceneListData = res.data.data
         })
+
+        propertyList(params).then(res => {
+          this.ruleProperties = res.data.data
+        })
+      },
+
+      // 场景改变
+      changeScene (item) {
       },
 
       // 新增属性
       addItem () {
         let item = {
-          itemName: '',
-          itemIdentify: '',
-          itemDesc: ''
+          rulePropertyId: '',
+          rulePropertyValue: '',
+          rulePropertyName: ''
         }
         this.itemDataForm.itemData.push(item)
       },
@@ -233,11 +233,14 @@
       },
 
       changeEntityItem (item, row) {
-        let list = this.itemDataForm.itemData.filter(i => i.itemIdentify === item)
-        if (list && list.length >= 1) {
-          row.itemIdentify = ''
-          this.$message.error('属性标识不能重复')
+        debugger
+        let list = this.itemDataForm.itemData.filter(i => i.rulePropertyId === item.rulePropertyId)
+        if (list && list.length > 1) {
+          row.rulePropertyId = ''
+          row.rulePropertyName = ''
+          this.$message.error('属性不能重复')
         }
+        row.rulePropertyName = item.rulePropertyName
       },
 
       // 表单提交

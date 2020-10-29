@@ -148,7 +148,7 @@
           type: 'warning'
         }).then(() => {
           let params = {
-            id: id
+            id: id + ''
           }
           del(params).then(res => {
             if (res.data && res.data.resultCode === 0) {

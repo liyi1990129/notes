@@ -2,12 +2,15 @@ package com.stu.drools.model;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * 描述：
  */
+@Table(name = "RULE_ACTION_INFO")
 public class RuleActionInfo extends BaseModel {
     @Id
+    @Column(name = "ACTION_ID")
     private Long actionId;//主键
     private Integer actionType;//动作类型
     private String actionName;//动作名称
@@ -62,4 +65,6 @@ public class RuleActionInfo extends BaseModel {
         return actionClass.substring(index + 1).substring(0, 1).toLowerCase() +
                 actionClass.substring(index + 1).substring(1);
     }
+
+
 }

@@ -6,6 +6,7 @@ import com.stu.drools.util.DateUtil;
 import com.stu.drools.util.DroolsUtil;
 import com.stu.drools.util.RuleUtils;
 import com.stu.drools.util.StringUtil;
+import com.stu.drools.vo.RulePropertyRelInfoVo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.ArrayUtils;
 import org.drools.core.base.RuleNameStartsWithAgendaFilter;
@@ -126,7 +127,12 @@ public class DroolsBiz {
         }
     }
 
-
+    /* *
+     * 1.实体信息：根据场景 查询出关联的实体
+     * 2. 根据场景查询可用的规则
+     * 3.
+     * @modifyTime 2020/10/29 16:32:00
+     */
     public String compileRule(String scene) throws Exception {
         //拼接规则脚本
         StringBuffer droolRuleStr = new StringBuffer();
@@ -233,9 +239,9 @@ public class DroolsBiz {
         // 1.拼接规则名称(默认带双引号)
         ruleStr.append(lineSeparator).append("rule").append(" ").append("\"").append(ruleInfo.getRuleName()).append("\"").append(lineSeparator);
         // 2.拼接自身属性
-        List<RulePropertyRelInfo> rulePropertyList = this.ruleInfoBiz.findRulePropertyListByRuleId(ruleInfo.getRuleId());
+        List<RulePropertyRelInfoVo> rulePropertyList = this.ruleInfoBiz.findRulePropertyListByRuleId(ruleInfo.getRuleId());
         if (StringUtil.listIsNotNull(rulePropertyList)) {
-            for (RulePropertyRelInfo pro : rulePropertyList) {
+            for (RulePropertyRelInfoVo pro : rulePropertyList) {
                 //如果配置的属性参数是字符串，则单独处理
                 if (ArrayUtils.contains(arr, pro.getRulePropertyIdentify())) {
                     ruleStr.append("    ").append(pro.getRulePropertyIdentify()).append(" ").append("\"").append(pro.getRulePropertyValue()).append("\"").append(lineSeparator);

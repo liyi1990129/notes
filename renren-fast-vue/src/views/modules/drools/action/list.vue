@@ -1,16 +1,16 @@
 <template>
   <div class="mod-menu">
     <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
-      <el-form-item label="规则名称">
-        <el-input v-model="dataForm.ruleName" placeholder="规则名称" clearable></el-input>
+      <el-form-item label="动作名称">
+        <el-input v-model="dataForm.actionName" placeholder="动作名称" clearable></el-input>
       </el-form-item>
-      <el-form-item label="所属场景">
-        <el-select v-model="dataForm.sceneId" filterable placeholder="请选择">
+      <el-form-item label="动作类型">
+        <el-select v-model="dataForm.actionType" filterable placeholder="请选择">
           <el-option
-            v-for="item in sceneListData"
-            :key="item.sceneId"
-            :label="item.sceneName"
-            :value="item.sceneId"
+            v-for="item in actionTypes"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
             >
           </el-option>
         </el-select>
@@ -33,23 +33,26 @@
         label="序号" >
       </el-table-column>
       <el-table-column
-        prop="ruleName"
+        prop="actionName"
         header-align="center"
         align="center"
         width="120"
-        label="规则名称">
+        label="动作名称">
       </el-table-column>
       <el-table-column
-        prop="ruleDesc"
+        prop="actionType"
         header-align="center"
         align="center"
-        label="规则描述">
+        label="动作类型">
+        <template slot-scope="scope">
+          {{scope.row.actionType | typePipe}}
+        </template>
       </el-table-column>
       <el-table-column
-        prop="sceneName"
+        prop="actionDesc"
         header-align="center"
         align="center"
-        label="所属场景">
+        label="动作描述">
       </el-table-column>
 
       <el-table-column
@@ -58,10 +61,8 @@
         width="150"
         label="操作">
         <template slot-scope="scope">
-          <el-button v-if="isAuth('sys:menu:update')" type="text" size="small" @click="addOrUpdateHandle(scope.row.ruleId)">修改</el-button>
-          <el-button v-if="isAuth('sys:menu:delete')" type="text" size="small" @click="deleteHandle(scope.row.ruleId)">删除</el-button>
-          <el-button v-if="isAuth('sys:menu:delete')" type="text" size="small" @click="addAction(scope.row.ruleId)">关联动作</el-button>
-          <el-button v-if="isAuth('sys:menu:delete')" type="text" size="small" @click="addCondition(scope.row.ruleId)">关联条件</el-button>
+          <el-button v-if="isAuth('sys:menu:update')" type="text" size="small" @click="addOrUpdateHandle(scope.row.actionId)">修改</el-button>
+          <el-button v-if="isAuth('sys:menu:delete')" type="text" size="small" @click="deleteHandle(scope.row.actionId)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -79,33 +80,29 @@
 
     <!-- 弹窗, 新增 / 修改 -->
     <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"></add-or-update>
-    <!-- 弹窗, 动作 -->
-    <add-action v-if="addActionVisible" ref="addAction" @refreshDataList="getDataList"></add-action>
-    <!-- 弹窗, 条件 -->
-    <add-condition v-if="addActionVisible" ref="addCondition" @refreshDataList="getDataList"></add-condition>
 
   </div>
 </template>
 
 <script>
-  import { pageList, del, sceneList } from '@/api/rule'
+  import { pageList, del } from '@/api/action'
   import AddOrUpdate from './add-or-update'
-  import addAction from './add-action'
-  import addCondition from './add-condition'
 
   export default {
     data () {
       return {
         dataForm: {
-          ruleName: '',
-          sceneId: ''
+          actionName: '',
+          actionType: null
         },
+        actionTypes: [
+          {label: '实现', value: 1},
+          {label: '自身', value: 2}
+        ],
         dataList: [],
         sceneListData: [],
         dataListLoading: false,
         addOrUpdateVisible: false,
-        addActionVisible: false,
-        addConditionVisible: false,
         page: {
           pageIndex: 1,
           pageSize: 10,
@@ -114,12 +111,9 @@
       }
     },
     components: {
-      AddOrUpdate,
-      addAction,
-      addCondition
+      AddOrUpdate
     },
     activated () {
-      this.initScene()
       this.getDataList()
     },
     methods: {
@@ -135,22 +129,14 @@
         this.getDataList()
       },
 
-      initScene () {
-        let params = {
-          isEffect: 1
-        }
-        sceneList(params).then(res => {
-          this.sceneListData = res.data.data
-        })
-      },
       // 获取数据列表
       getDataList () {
         this.dataListLoading = true
         let params = {
           pageNumber: this.page.pageIndex,
           pageSize: this.page.pageSize,
-          ruleName: this.dataForm.ruleName,
-          sceneId: this.dataForm.sceneId + ''
+          actionName: this.dataForm.actionName,
+          actionType: this.dataForm.actionType
         }
         pageList(params).then(res => {
           this.dataListLoading = false
@@ -163,20 +149,6 @@
         this.addOrUpdateVisible = true
         this.$nextTick(() => {
           this.$refs.addOrUpdate.init(id)
-        })
-      },
-      // 动作
-      addAction (id) {
-        this.addActionVisible = true
-        this.$nextTick(() => {
-          this.$refs.addAction.init(id)
-        })
-      },
-      // 条件
-      addCondition (id) {
-        this.addConditionVisible = true
-        this.$nextTick(() => {
-          this.$refs.addCondition.init(id)
         })
       },
       // 删除
@@ -205,8 +177,18 @@
           })
         }).catch(() => {})
       }
+    },
+    filters: {
+      typePipe: function (value) {
+        let label = ''
+        if (value === 1) {
+          label = '实现'
+        } else if (value === 2) {
+          label = '自身'
+        }
+        return label
+      }
     }
-
   }
 </script>
 <style>

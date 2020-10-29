@@ -17,9 +17,4 @@ public interface RuleActionParamInfoMapper extends Mapper<RuleActionParamInfo> {
      */
     List<RuleActionParamInfo> findBaseRuleActionParamInfoList(RuleActionParamInfo ruleActionParamInfo);
 
-    /**
-     * 方法说明: 根据动作id获取动作参数信息
-     * @param actionId 参数
-     */
-    List<RuleActionParamInfo> findRuleActionParamByActionId(@Param("actionId") Long actionId);
 }

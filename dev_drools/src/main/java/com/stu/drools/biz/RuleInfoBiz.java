@@ -3,10 +3,13 @@ package com.stu.drools.biz;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.stu.drools.mapper.RuleInfoMapper;
+import com.stu.drools.mapper.RulePropertyRelInfoMapper;
 import com.stu.drools.model.RuleInfo;
 import com.stu.drools.model.RulePropertyRelInfo;
 import com.stu.drools.model.RuleSceneInfo;
 import com.stu.drools.util.StringUtil;
+import com.stu.drools.vo.RuleInfoVo;
+import com.stu.drools.vo.RulePropertyRelInfoVo;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import tk.mybatis.mapper.entity.Example;
@@ -21,6 +24,8 @@ public class RuleInfoBiz {
 
     @Resource
     private RuleInfoMapper ruleInfoMapper;
+    @Resource
+    private RulePropertyRelInfoMapper rulePropertyRelInfoMapper;
     /**
      * 方法说明: 根据场景获取对应的规则规则信息
      *
@@ -40,27 +45,24 @@ public class RuleInfoBiz {
      *
      * @param ruleId 参数
      */
-    public List<RulePropertyRelInfo> findRulePropertyListByRuleId(final Long ruleId) {
+    public List<RulePropertyRelInfoVo> findRulePropertyListByRuleId(final Long ruleId) {
         return this.ruleInfoMapper.findRulePropertyListByRuleId(ruleId);
     }
 
-    public PageInfo page(Map<String, Object> params) {
+    public PageInfo page(Map<String,Object> params) {
         Integer pageNumber = (Integer) params.get("pageNumber");
         Integer pageSize = (Integer) params.get("pageSize");
-        PageHelper.startPage(pageNumber,pageSize);
-        Example example = new Example(RuleInfo.class);
-        Example.Criteria criteria = example.createCriteria();
-        String entityName = (String) params.get("entityName");
-        String entityIdentify = (String) params.get("entityIdentify");
-        if(!StringUtils.isEmpty(entityIdentify)){
-            criteria.andEqualTo("entityIdentify",entityIdentify);
-        }
-        if(!StringUtils.isEmpty(entityName)){
-            criteria.andLike("entityName",entityName);
+        String ruleName = (String) params.get("ruleName");
+        String sceneId = (String) params.get("sceneId");
+
+        RuleInfo info = new RuleInfo();
+        info.setRuleName(ruleName);
+        if(!StringUtils.isEmpty(sceneId)){
+            info.setSceneId(Long.valueOf(sceneId));
         }
 
-        List<RuleInfo> list = this.ruleInfoMapper.selectByExample(example);
-
+        PageHelper.startPage(pageNumber, pageSize);
+        List<RuleInfoVo> list = this.ruleInfoMapper.list(info);
         PageInfo pageInfo = new PageInfo<>(list);
         return pageInfo;
     }
@@ -94,6 +96,11 @@ public class RuleInfoBiz {
     }
 
     public void delRelByRuleId(Long ruleId){
-        this.ruleInfoMapper.delRelByRuleId(ruleId);
+        RulePropertyRelInfo info = new RulePropertyRelInfo();
+        info.setRuleId(ruleId);
+        rulePropertyRelInfoMapper.delete(info);
+    }
+    public void saveRel(RulePropertyRelInfo info){
+        this.rulePropertyRelInfoMapper.insert(info);
     }
 }

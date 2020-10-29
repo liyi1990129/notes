@@ -39,4 +39,16 @@
         AND T.IS_EFFECT = 1
         AND T.ACTION_PARAM_ID = #{paramId}
     </select>
+    <select id="findRuleParamValueByRuleId"
+            resultType="com.stu.drools.model.RuleActionParamValueInfo">
+        SELECT DISTINCT
+        <include refid="BaseFindParamValueSql"></include>
+        FROM
+        RULE_ACTION_PARAM_VALUE_INFO T,
+        RULE_ACTION_RULE_REL R
+        WHERE
+        1 = 1
+        AND T.RULE_ACTION_REL_ID = R.RULE_ACTION_REL_ID
+        AND R.RULE_ID = #{ruleId}
+    </select>
 </mapper>

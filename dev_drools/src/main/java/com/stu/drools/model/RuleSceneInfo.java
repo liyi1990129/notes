@@ -7,7 +7,7 @@ import javax.persistence.Table;
 /**
  * 描述：
  */
-@Table(name = "rule_scene_info")
+@Table(name = "RULE_SCENE_INFO")
 public class RuleSceneInfo extends BaseModel {
     @Id
     @Column(name = "SCENE_ID")

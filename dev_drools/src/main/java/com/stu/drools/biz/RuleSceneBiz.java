@@ -116,4 +116,8 @@ public class RuleSceneBiz {
     public List<RuleEntityInfo> findBaseRuleEntityListByScene(RuleSceneInfo ruleSceneInfo) {
         return this.ruleSceneEntityRelInfoMapper.findBaseRuleEntityListByScene(ruleSceneInfo);
     }
+
+    public List<RuleSceneInfo> findList(RuleSceneInfo info){
+        return this.ruleSceneInfoMapper.select(info);
+    }
 }

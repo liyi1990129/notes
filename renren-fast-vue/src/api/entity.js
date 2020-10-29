@@ -8,6 +8,20 @@ export function pageList (data) {
     data: data
   })
 }
+export function entityList (data) {
+  return httpRequest({
+    url: constant.DR + '/entity/list',
+    method: 'post',
+    data: data
+  })
+}
+export function entityItemList (data) {
+  return httpRequest({
+    url: constant.DR + '/entity/listItem',
+    method: 'post',
+    data: data
+  })
+}
 
 export function saveOrUpdate (data) {
   return httpRequest({

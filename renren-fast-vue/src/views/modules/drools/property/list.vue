@@ -35,18 +35,19 @@
         prop="defaultValue"
         header-align="center"
         align="center"
+        width="150"
         label="默认值">
       </el-table-column>
 
-      <el-table-column
-        header-align="center"
-        align="center"
-        width="150"
-        label="操作">
-        <template slot-scope="scope">
-          <el-button v-if="isAuth('sys:menu:update')" type="text" size="small" @click="addOrUpdateHandle(scope.row.entityId)">修改</el-button>
-        </template>
-      </el-table-column>
+<!--      <el-table-column-->
+<!--        header-align="center"-->
+<!--        align="center"-->
+<!--        width="150"-->
+<!--        label="操作">-->
+<!--        <template slot-scope="scope">-->
+<!--          <el-button v-if="isAuth('sys:menu:update')" type="text" size="small" @click="addOrUpdateHandle(scope.row.entityId)">修改</el-button>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
     </el-table>
 
     <!-- 分页 -->
@@ -60,15 +61,12 @@
       layout="total, sizes, prev, pager, next, jumper">
     </el-pagination>
 
-    <!-- 弹窗, 新增 / 修改 -->
-    <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"></add-or-update>
 
   </div>
 </template>
 
 <script>
   import { pageList } from '@/api/property'
-  import AddOrUpdate from './add-or-update'
 
   export default {
     data () {
@@ -88,7 +86,6 @@
       }
     },
     components: {
-      AddOrUpdate
     },
     activated () {
       this.getDataList()
@@ -124,7 +121,7 @@
         this.$nextTick(() => {
           this.$refs.addOrUpdate.init(id)
         })
-      },
+      }
 
     }
   }

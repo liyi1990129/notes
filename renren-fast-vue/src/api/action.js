@@ -3,7 +3,7 @@ import constant from './constant'
 
 export function pageList (data) {
   return httpRequest({
-    url: constant.DR + '/rule/page',
+    url: constant.DR + '/action/page',
     method: 'post',
     data: data
   })
@@ -43,34 +43,6 @@ export function del (data) {
 export function getInfo (data) {
   return httpRequest({
     url: constant.DR + '/rule/get',
-    method: 'post',
-    data: data
-  })
-}
-export function addAction (data) {
-  return httpRequest({
-    url: constant.DR + '/rule/addAction',
-    method: 'post',
-    data: data
-  })
-}
-export function addCondition (data) {
-  return httpRequest({
-    url: constant.DR + '/rule/addCondition',
-    method: 'post',
-    data: data
-  })
-}
-export function saveCondition (data) {
-  return httpRequest({
-    url: constant.DR + '/rule/saveCondition',
-    method: 'post',
-    data: data
-  })
-}
-export function saveAction (data) {
-  return httpRequest({
-    url: constant.DR + '/rule/saveAction',
     method: 'post',
     data: data
   })

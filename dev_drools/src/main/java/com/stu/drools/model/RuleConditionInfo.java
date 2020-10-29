@@ -1,12 +1,16 @@
 package com.stu.drools.model;
 
+import javax.persistence.Column;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * 描述：
  */
+@Table(name = "RULE_CONDITION_INFO")
 public class RuleConditionInfo extends BaseModel {
     @Id
+    @Column(name = "CONDITION_ID")
     private Long conditionId;//主键
     private Long ruleId;//规则id
     private String conditionName;//条件名称

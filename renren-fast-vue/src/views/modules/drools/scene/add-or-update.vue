@@ -150,7 +150,7 @@
         this.visible = true
         if (this.dataForm.id) {
           let params = {
-            id: this.dataForm.id
+            id: this.dataForm.id + ''
           }
           getInfo(params).then(res => {
             if (res.data.data && res.data.resultCode === 0) {
@@ -195,7 +195,7 @@
       changeEntityItem (item, row) {
         debugger
         let list = this.itemDataForm.itemData.filter(i => i.entityId === item.entityId)
-        if (list && list.length >= 1) {
+        if (list && list.length > 1) {
           row.entityIdentify = ''
           row.entityName = ''
           row.entityId = ''

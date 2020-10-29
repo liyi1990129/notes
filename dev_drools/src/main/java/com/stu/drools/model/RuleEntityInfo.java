@@ -9,7 +9,7 @@ import javax.persistence.Table;
 /**
  * 描述：
  */
-@Table(name = "rule_entity_info")
+@Table(name = "RULE_ENTITY_INFO")
 public class RuleEntityInfo extends BaseModel {
     @Id
     @Column(name = "ENTITY_ID")

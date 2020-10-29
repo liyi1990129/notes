@@ -25,4 +25,11 @@ public interface RuleActionParamValueInfoMapper extends Mapper<RuleActionParamVa
      * @param paramId 参数id
      */
     RuleActionParamValueInfo findRuleParamValueByActionParamId(@Param("paramId") Long paramId);
+
+    /* *
+     * 根据规则ID 获取参数value
+     * @author ly
+     * @modifyTime 2020/10/26 9:10:00
+     */
+    List<RuleActionParamValueInfo> findRuleParamValueByRuleId(@Param("ruleId") Long ruleId);
 }

@@ -1,32 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.stu.drools.mapper.RuleInfoMapper">
-    <select id="findBaseRuleInfoList" parameterType="com.stu.drools.model.RuleInfo"
-            resultType="com.stu.drools.model.RuleInfo">
-        SELECT DISTINCT
-        T.RULE_ID,
-        T.SCENE_ID,
-        T.RULE_NAME,
-        T.RULE_DESC,
-        T.RULE_ENABLED,
-        T.IS_EFFECT,
-        T.CRE_USER_ID,
-        T.CRE_TIME,
-        T.REMARK
-        FROM
-        RULE_INFO T
-        WHERE
-        1 = 1
-        <if test="sceneId != null">
-            AND T.SCENE_ID = #{sceneId}
-        </if>
-        <if test="ruleEnabled != null">
-            AND T.RULE_ENABLED = #{ruleEnabled}
-        </if>
-
-    </select>
-
-
     <select id="findBaseRulePropertyInfoList" parameterType="com.stu.drools.model.RulePropertyInfo"
             resultType="com.stu.drools.model.RulePropertyInfo">
         SELECT DISTINCT
@@ -49,7 +23,7 @@
         </if>
     </select>
 
-    <select id="findRulePropertyListByRuleId" resultType="com.stu.drools.model.RulePropertyRelInfo">
+    <select id="findRulePropertyListByRuleId" resultType="com.stu.drools.vo.RulePropertyRelInfoVo">
         SELECT DISTINCT
         RPR.RULE_PRO_REL_ID,
         RPR.RULE_ID,
@@ -94,6 +68,33 @@
         AND R.RULE_ENABLED = 1
         <if test="sceneIdentify != null">
             AND S.SCENE_IDENTIFY = #{sceneIdentify}
+        </if>
+        <if test="sceneId != null">
+            AND S.SCENE_ID = #{sceneId}
+        </if>
+
+    </select>
+    <select id="list" parameterType="com.stu.drools.model.RuleSceneInfo"
+            resultType="com.stu.drools.vo.RuleInfoVo">
+        SELECT DISTINCT
+        R.RULE_ID,
+        R.SCENE_ID,
+        R.RULE_NAME,
+        R.RULE_DESC,
+        R.RULE_ENABLED,
+        R.IS_EFFECT,
+        R.CRE_USER_ID,
+        R.CRE_TIME,
+        R.REMARK,
+        S.SCENE_IDENTIFY,
+        S.SCENE_NAME
+        FROM
+        RULE_INFO R
+        INNER JOIN RULE_SCENE_INFO S ON S.SCENE_ID = R.SCENE_ID
+        WHERE
+        1 = 1
+        <if test="ruleName != null">
+            AND R.RULE_NAME LIKE CONCAT('%',#{ruleName},'%')
         </if>
         <if test="sceneId != null">
             AND S.SCENE_ID = #{sceneId}

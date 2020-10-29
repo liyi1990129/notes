@@ -1,12 +1,16 @@
 package com.stu.drools.model;
 
+import javax.persistence.Column;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * 描述：
  */
+@Table(name = "RULE_VARIABLE")
 public class RuleVariableInfo extends BaseModel {
     @Id
+    @Column(name = "VARIABLE_ID")
     private Long variableId;//主键
     private String variableName;//变量名称
     private Integer variableType;//变量类型

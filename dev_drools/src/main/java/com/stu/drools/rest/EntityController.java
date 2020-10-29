@@ -45,16 +45,32 @@ public class EntityController {
         res.setSuucessMsg("查询成功");
         return res;
     }
+    @PostMapping(value = "/listItem")
+    public ObjectRestResponse listItem(@RequestBody Map<String,Object> params){
+        ObjectRestResponse res = new ObjectRestResponse();
+        String id = (String) params.get("id");
+        if(StringUtils.isBlank(id)){
+            res.setErrorMsg("参数缺失");
+            return res;
+        }
+        Map<String,Object> query = new HashMap<>();
+        query.put("entityId",Long.valueOf(id));
+        query.put("isEffect",1);
+        List<RuleEntityItemInfo> list =  ruleEntityItemBiz.listByParams(query);
+        res.setData(list);
+        res.setSuucessMsg("查询成功");
+        return res;
+    }
 
     @PostMapping(value = "/get")
     public ObjectRestResponse get(@RequestBody Map<String,Object> params){
         ObjectRestResponse res = new ObjectRestResponse();
-        Long id = (Long) params.get("id");
-        if(null==id){
+        String id = (String) params.get("id");
+        if(StringUtils.isBlank(id)){
             res.setErrorMsg("参数缺失");
             return res;
         }
-        RuleEntityInfo info = ruleEntityBiz.findBaseRuleEntityInfoById(id);
+        RuleEntityInfo info = ruleEntityBiz.findBaseRuleEntityInfoById(Long.valueOf(id));
         Map<String,Object> query = new HashMap<>();
         query.put("entityId",id);
         List<RuleEntityItemInfo> list =  ruleEntityItemBiz.listByParams(query);
@@ -71,13 +87,13 @@ public class EntityController {
     @PostMapping(value = "/del")
     public ObjectRestResponse del(@RequestBody Map<String,Object> params){
         ObjectRestResponse res = new ObjectRestResponse();
-        Long id = (Long) params.get("id");
-        if(null==id){
+        String id = (String) params.get("id");
+        if(StringUtils.isBlank(id)){
             res.setErrorMsg("参数缺失");
             return res;
         }
-        ruleEntityItemBiz.delInfoByEntityId(id);
-        ruleEntityBiz.delEntityInfoById(id);
+        ruleEntityItemBiz.delInfoByEntityId(Long.valueOf(id));
+        ruleEntityBiz.delEntityInfoById(Long.valueOf(id));
         res.setSuucessMsg("删除成功");
         return res;
     }

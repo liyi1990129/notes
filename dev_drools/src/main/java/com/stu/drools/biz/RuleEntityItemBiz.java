@@ -34,7 +34,7 @@ public class RuleEntityItemBiz {
     }
 
     public List<RuleEntityItemInfo> listByParams(Map<String,Object> params)  {
-        Integer entityId = (Integer) params.get("entityId");
+        Long entityId = (Long) params.get("entityId");
         Integer isEffect = (Integer) params.get("isEffect");
         Example example = new Example(RuleEntityItemInfo.class);
         Example.Criteria criteria = example.createCriteria();

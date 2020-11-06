@@ -1,4 +1,33 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.stu.drools.mapper.RuleSceneInfoMapper">
+
+    <insert id="add" parameterType="com.stu.drools.model.RuleSceneInfo"
+            useGeneratedKeys="true" keyColumn="scene_id" keyProperty="sceneId">
+        insert into RULE_SCENE_INFO
+        (
+        SCENE_IDENTIFY,
+        SCENE_TYPE,
+        SCENE_NAME,
+        SCENE_DESC,
+        CRE_USER_ID,
+        CRE_TIME,
+        IS_EFFECT,
+        REMARK)
+        values(
+        #{sceneIdentify},
+        #{sceneType},
+        #{sceneName},
+        #{sceneDesc},
+        #{creUserId},
+        #{creTime},
+        #{isEffect},
+        #{remark}
+        )
+        <selectKey resultType="long" keyProperty="sceneId" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+
 </mapper>

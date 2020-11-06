@@ -1,12 +1,16 @@
 package com.stu.drools.model;
 
+import lombok.Data;
+
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * 描述：
  */
+@Data
 @Table(name = "RULE_ENTITY_ITEM_INFO")
 public class RuleEntityItemInfo extends BaseModel {
     @Id
@@ -17,43 +21,6 @@ public class RuleEntityItemInfo extends BaseModel {
     private String itemIdentify;//字段标识
     private String itemDesc;//属性描述
 
-    public Long getItemId() {
-        return itemId;
-    }
-
-    public void setItemId(Long itemId) {
-        this.itemId = itemId;
-    }
-
-    public Long getEntityId() {
-        return entityId;
-    }
-
-    public void setEntityId(Long entityId) {
-        this.entityId = entityId;
-    }
-
-    public String getItemName() {
-        return itemName;
-    }
-
-    public void setItemName(String itemName) {
-        this.itemName = itemName;
-    }
-
-    public String getItemIdentify() {
-        return itemIdentify;
-    }
-
-    public void setItemIdentify(String itemIdentify) {
-        this.itemIdentify = itemIdentify;
-    }
-
-    public String getItemDesc() {
-        return itemDesc;
-    }
-
-    public void setItemDesc(String itemDesc) {
-        this.itemDesc = itemDesc;
-    }
+    @Transient
+    private String itemValue;
 }

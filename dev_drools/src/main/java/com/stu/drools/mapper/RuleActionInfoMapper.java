@@ -41,4 +41,5 @@ public interface RuleActionInfoMapper extends Mapper<RuleActionInfo> {
      */
     Integer findRuleActionCountByRuleIdAndActionType(@Param("ruleId") Long ruleId);
 
+    void add(RuleActionInfo ruleActionInfo);
 }

@@ -97,8 +97,8 @@ public class RuleSceneBiz {
         if (null == info.getSceneId()) {
             info.setCreTime(new Date());
             info.setCreUserId(new Long(1));
-            info.setIsEffect(1);
-            this.ruleSceneInfoMapper.insertSelective(info);
+            info.setIsEffect("1");
+            this.ruleSceneInfoMapper.add(info);
         } else {
             Example example = new Example(RuleSceneInfo.class);
             Example.Criteria criteria = example.createCriteria();

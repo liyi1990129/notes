@@ -53,7 +53,7 @@ public class RuleActionInfoBiz {
      *
      * @param sceneInfo 参数
      */
-    public List<RuleActionInfo> findRuleActionListByScene(RuleSceneInfo sceneInfo) throws Exception {
+    public List<RuleActionInfo> findRuleActionListByScene(RuleSceneInfo sceneInfo)  {
         if (null == sceneInfo || (null == sceneInfo.getSceneId() &&
             StringUtil.strIsNull(sceneInfo.getSceneIdentify()))) {
             throw new NullPointerException("参数缺失！");
@@ -99,8 +99,8 @@ public class RuleActionInfoBiz {
         if(null == ruleActionInfo.getActionId()){
             ruleActionInfo.setCreTime(new Date());
             ruleActionInfo.setCreUserId(new Long(1));
-            ruleActionInfo.setIsEffect(1);
-            this.ruleActionInfoMapper.insert(ruleActionInfo);
+            ruleActionInfo.setIsEffect("1");
+            this.ruleActionInfoMapper.add(ruleActionInfo);
         }else{
             Example example = new Example(RuleActionInfo.class);
             Example.Criteria criteria = example.createCriteria();
@@ -110,4 +110,9 @@ public class RuleActionInfoBiz {
         return ruleActionInfo.getActionId();
     }
 
+    public void delInfo(Long id) {
+        RuleActionInfo info = new RuleActionInfo();
+        info.setActionId(id);
+        this.ruleActionInfoMapper.delete(info);
+    }
 }

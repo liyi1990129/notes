@@ -10,7 +10,7 @@ public class RuleInfoVo {
     private Long sceneId;//场景
     private String ruleName;//名称
     private String ruleDesc;//描述
-    private Integer ruleEnabled;//是否启用
+    private String ruleEnabled;//是否启用
 
     private String sceneIdentify;//标识
     private Integer sceneType;//类型

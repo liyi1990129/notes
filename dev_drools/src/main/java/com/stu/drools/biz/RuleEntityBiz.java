@@ -75,7 +75,7 @@ public class RuleEntityBiz {
         if(null== info.getEntityId()){
             info.setCreTime(new Date());
             info.setCreUserId(new Long(1));
-            info.setIsEffect(1);
+            info.setIsEffect("1");
              this.ruleEntityInfoMapper.add(info);
         }else {
             Example example = new Example(RuleEntityInfo.class);

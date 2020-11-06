@@ -5,6 +5,8 @@ import com.github.pagehelper.PageInfo;
 import com.stu.drools.biz.*;
 import com.stu.drools.common.ObjectRestResponse;
 import com.stu.drools.model.*;
+import com.stu.drools.model.fact.RuleExecutionObject;
+import com.stu.drools.model.fact.RuleExecutionResult;
 import com.stu.drools.vo.RuleActionRuleRelInfoVo;
 import com.stu.drools.vo.RulePropertyRelInfoVo;
 import org.apache.commons.lang.StringUtils;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -77,6 +80,9 @@ public class RuleController {
             res.setErrorMsg("参数缺失");
             return res;
         }
+        ruleConditionBiz.delByRuleId(Long.valueOf(id));
+        ruleActionRuleRelInfoBiz.delByRuleId(Long.valueOf(id));
+        this.ruleInfoBiz.delRelByRuleId(Long.valueOf(id));
         ruleInfoBiz.delInfoById(Long.valueOf(id));
         res.setSuucessMsg("删除成功");
         return res;
@@ -91,12 +97,10 @@ public class RuleController {
         List<RulePropertyRelInfo> rulePropertyRelInfos = JSON.parseArray(relInfo,RulePropertyRelInfo.class);
         Long id = ruleInfo.getRuleId();
 
-        if(ruleInfo.getRuleId()==null){
-            id = ruleInfoBiz.saveOrUpdate(ruleInfo);
-        }else{
+        if(ruleInfo.getRuleId()!=null){
             this.ruleInfoBiz.delRelByRuleId(id);
-            ruleInfoBiz.saveOrUpdate(ruleInfo);
         }
+        id = ruleInfoBiz.saveOrUpdate(ruleInfo);
 
         for (RulePropertyRelInfo rulePropertyRelInfo : rulePropertyRelInfos) {
             rulePropertyRelInfo.setRuleId(id);
@@ -140,7 +144,7 @@ public class RuleController {
         }
         //所有有效的动作
         RuleActionInfo info = new RuleActionInfo();
-        info.setIsEffect(1);
+        info.setIsEffect("1");
         List<RuleActionInfo> allList = ruleActionInfoBiz.list(info);
 
         //规则所属场景的实体
@@ -229,4 +233,6 @@ public class RuleController {
         }
         return res;
     }
+
+
 }

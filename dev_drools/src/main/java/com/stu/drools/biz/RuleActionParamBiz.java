@@ -24,7 +24,7 @@ public class RuleActionParamBiz {
         }
         RuleActionParamInfo info = new RuleActionParamInfo();
         info.setActionId(actionId);
-        info.setIsEffect(1);
+        info.setIsEffect("1");
         return this.ruleActionParamInfoMapper.select(info);
     }
 
@@ -48,7 +48,7 @@ public class RuleActionParamBiz {
         if(info.getActionParamId()==null){
             info.setCreTime(new Date());
             info.setCreUserId(new Long(1));
-            info.setIsEffect(1);
+            info.setIsEffect("1");
             this.ruleActionParamInfoMapper.insert(info);
         }else{
             Example example = new Example(RuleActionParamInfo.class);

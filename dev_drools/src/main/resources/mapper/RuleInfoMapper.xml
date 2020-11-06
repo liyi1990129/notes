@@ -102,4 +102,32 @@
 
     </select>
 
+
+    <insert id="add" parameterType="com.stu.drools.model.RuleInfo"
+            useGeneratedKeys="true" keyColumn="rule_id" keyProperty="ruleId">
+        insert into RULE_INFO
+        (
+        SCENE_ID,
+        RULE_NAME,
+        RULE_DESC,
+        RULE_ENABLED,
+        CRE_USER_ID,
+        CRE_TIME,
+        IS_EFFECT,
+        REMARK)
+        values(
+        #{sceneId},
+        #{ruleName},
+        #{ruleDesc},
+        #{ruleEnabled},
+        #{creUserId},
+        #{creTime},
+        #{isEffect},
+        #{remark}
+        )
+        <selectKey resultType="long" keyProperty="ruleId" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
 </mapper>

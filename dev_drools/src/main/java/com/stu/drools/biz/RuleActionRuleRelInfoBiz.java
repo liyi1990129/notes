@@ -41,8 +41,8 @@ public class RuleActionRuleRelInfoBiz {
         info.setRuleId(vo.getRuleId());
         info.setCreUserId(Long.valueOf(1));
         info.setCreTime(new Date());
-        info.setIsEffect(1);
-        this.ruleActionRuleRelInfoMapper.insert(info);
+        info.setIsEffect("1");
+        this.ruleActionRuleRelInfoMapper.add(info);
         Long id = info.getRuleActionRelId();
         if(!CollectionUtils.isEmpty(vo.getRelList())){
             for (RuleActionParamValueInfo ruleActionParamValueInfo : vo.getRelList()) {

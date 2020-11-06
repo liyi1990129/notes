@@ -36,4 +36,6 @@ public interface RuleInfoMapper extends Mapper<RuleInfo> {
     List<RuleInfo> findBaseRuleListByScene(RuleSceneInfo ruleSceneInfo);
 
     List<RuleInfoVo> list(RuleInfo ruleInfo);
+
+    void add(RuleInfo ruleInfo);
 }

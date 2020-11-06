@@ -18,7 +18,7 @@ public class RuleActionParamValueBiz {
      *
      * @param paramId 参数id
      */
-    public RuleActionParamValueInfo findRuleParamValueByActionParamId(Long paramId) throws Exception {
+    public RuleActionParamValueInfo findRuleParamValueByActionParamId(Long paramId)  {
         if(null == paramId){
             throw new NullPointerException("参数缺失");
         }
@@ -42,7 +42,7 @@ public class RuleActionParamValueBiz {
     public void saveOrUpdate(RuleActionParamValueInfo ruleActionParamValueInfo) {
         ruleActionParamValueInfo.setCreTime(new Date());
         ruleActionParamValueInfo.setCreUserId(Long.valueOf(1));
-        ruleActionParamValueInfo.setIsEffect(1);
+        ruleActionParamValueInfo.setIsEffect("1");
         this.ruleActionParamValueInfoMapper.insert(ruleActionParamValueInfo);
     }
 }

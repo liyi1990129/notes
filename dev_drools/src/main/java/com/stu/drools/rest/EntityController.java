@@ -9,6 +9,7 @@ import com.stu.drools.model.RuleEntityInfo;
 import com.stu.drools.model.RuleEntityItemInfo;
 import com.stu.drools.util.ScanningFileUtil;
 import com.stu.drools.vo.ClassVo;
+import com.stu.drools.vo.PropertyVo;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -72,9 +73,9 @@ public class EntityController {
         }
         RuleEntityInfo info = ruleEntityBiz.findBaseRuleEntityInfoById(Long.valueOf(id));
         Map<String,Object> query = new HashMap<>();
-        query.put("entityId",id);
+        query.put("entityId",Long.valueOf(id));
         List<RuleEntityItemInfo> list =  ruleEntityItemBiz.listByParams(query);
-        List<String> proList = ScanningFileUtil.getEntityFields(info.getEntityClazz());
+        List<PropertyVo> proList = ScanningFileUtil.getEntityFields(info.getPkgName());
 
         Map<String,Object> result = new HashMap<>();
         result.put("entity",info);
@@ -107,9 +108,10 @@ public class EntityController {
         Long id = ruleEntityInfo.getEntityId();
         if(null!= ruleEntityInfo.getEntityId()){
             ruleEntityItemBiz.delInfoByEntityId(ruleEntityInfo.getEntityId());
-        }else{
-            id = ruleEntityBiz.saveOrUpdate(ruleEntityInfo);
         }
+
+        id = ruleEntityBiz.saveOrUpdate(ruleEntityInfo);
+
         if(StringUtils.isNotBlank(entityItems)){
             List<RuleEntityItemInfo> list = JSON.parseArray(entityItems, RuleEntityItemInfo.class);
             for(RuleEntityItemInfo item:list){
@@ -147,7 +149,7 @@ public class EntityController {
     public ObjectRestResponse getEntityProperties(@RequestBody Map<String,Object> params){
         String clsName = (String) params.get("className");
         ObjectRestResponse res = new ObjectRestResponse();
-        List<String> list = ScanningFileUtil.getEntityFields(clsName);
+        List<PropertyVo> list = ScanningFileUtil.getEntityFields(clsName);
         res.setData(list);
         res.setSuucessMsg("查询成功");
         return res;

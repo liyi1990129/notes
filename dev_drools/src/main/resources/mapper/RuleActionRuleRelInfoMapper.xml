@@ -21,4 +21,27 @@
                 </if>
 
     </select>
+
+    <insert id="add" parameterType="com.stu.drools.model.RuleActionRuleRelInfo"
+            useGeneratedKeys="true" keyColumn="rule_action_rel_id" keyProperty="ruleActionRelId">
+        insert into RULE_ACTION_RULE_REL
+        (
+        ACTION_ID,
+        RULE_ID,
+        CRE_USER_ID,
+        CRE_TIME,
+        IS_EFFECT,
+        REMARK)
+        values(
+        #{actionId},
+        #{ruleId},
+        #{creUserId},
+        #{creTime},
+        #{isEffect},
+        #{remark}
+        )
+        <selectKey resultType="long" keyProperty="ruleActionRelId" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
 </mapper>

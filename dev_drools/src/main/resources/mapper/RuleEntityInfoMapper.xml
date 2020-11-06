@@ -52,7 +52,7 @@
                 #{isEffect},
                 #{remark}
                 )
-        <selectKey resultType="int" keyProperty="entityId" order="AFTER">
+        <selectKey resultType="long" keyProperty="entityId" order="AFTER">
             SELECT LAST_INSERT_ID()
         </selectKey>
     </insert>

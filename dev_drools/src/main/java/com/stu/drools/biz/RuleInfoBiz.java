@@ -31,7 +31,7 @@ public class RuleInfoBiz {
      *
      * @param ruleSceneInfo 参数
      */
-    public List<RuleInfo> findBaseRuleListByScene(RuleSceneInfo ruleSceneInfo) throws Exception {
+    public List<RuleInfo> findBaseRuleListByScene(RuleSceneInfo ruleSceneInfo) {
         if (null == ruleSceneInfo || (null == ruleSceneInfo.getSceneId() &&
             StringUtil.strIsNull(ruleSceneInfo.getSceneIdentify()))) {
             throw new NullPointerException("参数缺失！");
@@ -83,8 +83,8 @@ public class RuleInfoBiz {
         if(null== ruleInfo.getRuleId()){
             ruleInfo.setCreTime(new Date());
             ruleInfo.setCreUserId(new Long(1));
-            ruleInfo.setIsEffect(1);
-            this.ruleInfoMapper.insert(ruleInfo);
+            ruleInfo.setIsEffect("1");
+            this.ruleInfoMapper.add(ruleInfo);
         }else {
             Example example = new Example(RuleInfo.class);
             Example.Criteria criteria = example.createCriteria();

@@ -82,4 +82,32 @@
             AND A.ACTION_TYPE = 1
             AND AR.RULE_ID = #{ruleId}
     </select>
+
+
+    <insert id="add" parameterType="com.stu.drools.model.RuleActionInfo"
+            useGeneratedKeys="true" keyColumn="action_id" keyProperty="actionId">
+        insert into RULE_ACTION_INFO
+        (
+        ACTION_TYPE,
+        ACTION_NAME,
+        ACTION_DESC,
+        ACTION_CLASS,
+        CRE_USER_ID,
+        CRE_TIME,
+        IS_EFFECT,
+        REMARK)
+        values(
+        #{actionType},
+        #{actionName},
+        #{actionDesc},
+        #{actionClass},
+        #{creUserId},
+        #{creTime},
+        #{isEffect},
+        #{remark}
+        )
+        <selectKey resultType="long" keyProperty="actionId" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
 </mapper>

@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.ArrayUtils;
 import org.drools.core.base.RuleNameStartsWithAgendaFilter;
 import org.kie.api.runtime.KieSession;
+import org.kie.api.runtime.rule.QueryResults;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -43,13 +44,17 @@ public class DroolsBiz {
     @Resource
     private RuleActionParamValueBiz ruleActionParamValueBiz;
 
-    public RuleExecutionObject excute(RuleExecutionObject ruleExecutionObject, final String scene) throws Exception {
+    public String getTemplate(String scene){
+        //重新编译规则，然后执行
+        String droolRuleStr = compileRule(scene);
+        log.info("**********************************************");
+        log.info(droolRuleStr);
+        log.info("**********************************************");
+        return droolRuleStr;
+    }
+
+    public RuleExecutionObject excute(RuleExecutionObject ruleExecutionObject, final String scene,final  String droolRuleStr)  {
         try {
-            //重新编译规则，然后执行
-            String droolRuleStr = compileRule(scene);
-            log.info("**********************************************");
-            log.info(droolRuleStr);
-            log.info("**********************************************");
             return compileRuleAndexEcuteRuleEngine(droolRuleStr,ruleExecutionObject, scene);
         } catch (Exception e) {
             e.printStackTrace();
@@ -108,6 +113,9 @@ public class DroolsBiz {
 //                }
 //            }
 
+//            session.getAgenda().getAgendaGroup("").setFocus();
+//            QueryResults results = session.getQueryResults("");
+
             //执行规则
             //1,是否全部执行
             if (ruleExecutionObject.isExecuteAll()) {
@@ -133,7 +141,7 @@ public class DroolsBiz {
      * 3.
      * @modifyTime 2020/10/29 16:32:00
      */
-    public String compileRule(String scene) throws Exception {
+    public String compileRule(String scene)  {
         //拼接规则脚本
         StringBuffer droolRuleStr = new StringBuffer();
         log.info("===================重新拼接规则串======================");
@@ -173,7 +181,7 @@ public class DroolsBiz {
      * @param entityList   实体信息
      */
     private StringBuffer insertImportInfo(StringBuffer droolRuleStr, List<RuleEntityInfo> entityList,
-                                          RuleSceneInfo sceneInfo) throws Exception {
+                                          RuleSceneInfo sceneInfo) {
 
         // 1.导入场景对应的实体类
         for (RuleEntityInfo entityInfo : entityList) {
@@ -194,7 +202,7 @@ public class DroolsBiz {
 
                 if (!implFlag) {
                     //如果是实现动作类，则先打标记
-                    if (actionInfo.getActionType() == 1) {
+                    if ("1".equals(actionInfo.getActionType())) {
                         implFlag = true;
                     }
                 }
@@ -215,7 +223,7 @@ public class DroolsBiz {
      *
      * @param ruleInfo 规则
      */
-    private StringBuffer getDroolsInfoByRule(RuleInfo ruleInfo) throws Exception {
+    private StringBuffer getDroolsInfoByRule(RuleInfo ruleInfo)  {
         //拼接规则字符串
         StringBuffer sb = new StringBuffer();
         // 1.拼接规则自身属性信息
@@ -235,7 +243,7 @@ public class DroolsBiz {
      * @param ruleStr  规则字符串
      * @param ruleInfo 规则
      */
-    private StringBuffer insertRuleInfo(StringBuffer ruleStr, RuleInfo ruleInfo) throws Exception {
+    private StringBuffer insertRuleInfo(StringBuffer ruleStr, RuleInfo ruleInfo)  {
         // 1.拼接规则名称(默认带双引号)
         ruleStr.append(lineSeparator).append("rule").append(" ").append("\"").append(ruleInfo.getRuleName()).append("\"").append(lineSeparator);
         // 2.拼接自身属性
@@ -260,7 +268,7 @@ public class DroolsBiz {
      * @param ruleStr  规则字符串
      * @param ruleInfo 规则
      */
-    private StringBuffer insertRuleCondition(StringBuffer ruleStr, RuleInfo ruleInfo) throws Exception {
+    private StringBuffer insertRuleCondition(StringBuffer ruleStr, RuleInfo ruleInfo)  {
         // 1.拼接when
         ruleStr.append(lineSeparator).append("when").append(lineSeparator);
         //参数
@@ -289,7 +297,7 @@ public class DroolsBiz {
      * @param ruleStr 规则串
      * @param conList 条件集合
      */
-    private StringBuffer insertRuleConditionFromList(StringBuffer ruleStr, List<RuleConditionInfo> conList) throws Exception {
+    private StringBuffer insertRuleConditionFromList(StringBuffer ruleStr, List<RuleConditionInfo> conList) {
 
         //只保存条件内容
         StringBuilder sb = new StringBuilder();
@@ -352,7 +360,7 @@ public class DroolsBiz {
      * @param ruleStr  规则串
      * @param ruleInfo 规则
      */
-    private StringBuffer insertRuleActionInfo(StringBuffer ruleStr, RuleInfo ruleInfo) throws Exception {
+    private StringBuffer insertRuleActionInfo(StringBuffer ruleStr, RuleInfo ruleInfo)  {
         // 1.拼接then
         ruleStr.append(lineSeparator).append("then").append(lineSeparator);
         // 2.根据规则获取动作信息
@@ -415,7 +423,7 @@ public class DroolsBiz {
                         }
                     } else {
                         realValue = paramValue.getParamValue();
-                        if(action.getActionType()!=3){
+                        if(!"3".equals(action.getActionType())){
                             //如果是字符串，则添加双引号
                             if (!RuleUtils.checkStyleOfString(realValue)) {
                                 realValue = "\"" + realValue + "\"";
@@ -424,10 +432,10 @@ public class DroolsBiz {
                     }
 
                     //如果是实现类动作，则把参数放到全局变量 _result map里
-                    if (action.getActionType() == 1) {
+                    if ("1".equals(action.getActionType())) {
                         implFlag = true;
                         ruleStr.append("_result.getMap().put(\"").append(paramInfo.getParamIdentify()).append("\",").append(realValue).append(");").append(lineSeparator);//map.put("key",value)
-                    } else if(action.getActionType()==3){
+                    } else if("3".equals(action.getActionType())){
                         ruleStr.append("modify($").append(action.getActionClazzIdentify()).append("){").
                                 append(paramInfo.getParamIdentify()).append(realValue).append("};").append(lineSeparator);
 //                        ruleStr.append("$").append(action.getActionClazzIdentify()).append(".").
@@ -446,6 +454,7 @@ public class DroolsBiz {
 
             //TODO 规则执行记录信息
 
+            ruleStr.append("_result.getMap().put(\"").append(ruleInfo.getRuleName()).append("\",true)").append(";").append(lineSeparator);
 
             // 8.拼装结尾标识
             ruleStr.append("end").append(lineSeparator).append(lineSeparator).append(lineSeparator);

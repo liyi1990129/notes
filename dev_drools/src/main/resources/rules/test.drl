@@ -2,19 +2,18 @@ package com.drools.rules;
 import com.stu.drools.model.fact.RuleExecutionResult;
 global RuleExecutionResult _result;
 import com.stu.drools.model.fact.RuleExecutionObject;
-import com.stu.drools.model.fact.Claim;
 import java.lang.String;
 import java.util.Map;
 import java.util.List;
-import com.stu.drools.model.fact.TestRule;
-import com.stu.drools.service.DroolsActionService;
+import com.stu.drools.entity.Student;
 
 rule "test1"
 no-loop true
 when
 $fact:RuleExecutionObject()
-$claim:Claim(claimType contains 'Y' && matches  'Y.*'   )
+$student:Student(age > 6)
 then
  System.out.println("test1 被触发");
+ _result.getMap().put("test",true);
 end
 

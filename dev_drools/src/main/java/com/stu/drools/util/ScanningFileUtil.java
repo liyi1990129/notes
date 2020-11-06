@@ -1,6 +1,8 @@
 package com.stu.drools.util;
 
+import com.stu.drools.entity.Claim;
 import com.stu.drools.vo.ClassVo;
+import com.stu.drools.vo.PropertyVo;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
@@ -26,13 +28,14 @@ public class ScanningFileUtil {
 
     private static final String STARATEGY_PATH = "com.stu.drools.entity";//需要扫描的策略包名
 
-    public static List<String> getEntityFields(String className) {
-        List<String> result = new ArrayList<>();
+    public static List<PropertyVo> getEntityFields(String className) {
+        List<PropertyVo> result = new ArrayList<>();
         try{
             Class<?> clz = Class.forName(className);
             // 获取实体类的所有属性，返回Field数组
-            Field[] fields = clz.getDeclaredFields();
-            result = Arrays.stream(fields).map(Field::getName).collect(Collectors.toList());
+//            Field[] fields = clz.getDeclaredFields();
+//            result = Arrays.stream(fields).map(Field::getName).collect(Collectors.toList());
+            result = FiledUtil.getChName(clz);
         }catch (Exception e){
             log.error("获取属性异常:{}",e);
         }

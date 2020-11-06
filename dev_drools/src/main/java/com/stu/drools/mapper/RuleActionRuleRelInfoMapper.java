@@ -15,4 +15,6 @@ public interface RuleActionRuleRelInfoMapper extends Mapper<RuleActionRuleRelInf
      * @param ruleActionRuleRelInfo 参数
      */
     List<RuleActionRuleRelInfo> findBaseRuleActionRuleRelInfoList(RuleActionRuleRelInfo ruleActionRuleRelInfo);
+
+    void add(RuleActionRuleRelInfo info);
 }

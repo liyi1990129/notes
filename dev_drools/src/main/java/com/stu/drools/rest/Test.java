@@ -5,6 +5,7 @@ import com.stu.drools.model.fact.RuleExecutionObject;
 import com.stu.drools.model.fact.RuleExecutionResult;
 
 import java.io.*;
+import java.lang.reflect.Field;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,13 +16,26 @@ public class Test {
 
     public static void main(String[] args) throws Exception {
 
-        RuleExecutionObject object = new RuleExecutionObject();
-        Map<String,Object> test = new HashMap<>();
-        test.put("score",100);
-        object.addFactObject(test);
 
-        String arr[] = {"aaa","bbb"};
-        object.addFactObject(arr);
+        Map<String,Object> map = new HashMap<>();
+        map.put("name","张三");
+        map.put("age",13);
+        map.put("sex","man");
+        map.put("clsName","1");
+        RuleExecutionObject object = new RuleExecutionObject();
+        Class<?> stuClass = Class.forName("com.stu.drools.entity.Student");
+        //获取一个对象
+        Object obj = stuClass.getConstructor().newInstance();
+
+        for (String key : map.keySet()) {
+            Field f = stuClass.getDeclaredField(key);
+            Object v = map.get(key);
+            System.out.println(f);
+            f.setAccessible(true);//暴力反射，解除私有限定
+            f.set(obj, v);
+        }
+
+        object.addFactObject(obj);
 
 
         //全局对象
@@ -65,7 +79,7 @@ public class Test {
     }
     public static String getRules1(String fileName) throws IOException {
         String str = "";
-        String path = "G://2020/day14_drools/src/main/resources/rules/"+fileName;
+        String path = "F://git/dev_drools/src/main/resources/rules/"+fileName;
         File file = new File(path);
         long fileSize = file.length();
         if (fileSize > Integer.MAX_VALUE) {

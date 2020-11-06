@@ -1,5 +1,7 @@
 package com.stu.drools.model.fact;
 
+import lombok.Data;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,12 +10,8 @@ import java.util.Map;
 
 /**
  * 描述：封装规则执行传参对象
- * CLASSPATH: com.stu.drools.model.fact.RuleExecutionObject
- * VERSION:   1.0
- * Created by lihao
- * DATE:      2017/7/25
  */
-//@SuppressWarnings("unchecked")
+@Data
 public class RuleExecutionObject implements Serializable {
 
     //fact集合
@@ -26,11 +24,7 @@ public class RuleExecutionObject implements Serializable {
     private String ruleName;
 
     /**
-     * Date 2017/7/25
-     * Author lihao [lihao@sinosoft.com]
-     * <p>
      * 方法说明: 添加fact对象
-     *
      * @param factObject fact对象
      */
     public void addFactObject(Object factObject) {
@@ -38,11 +32,7 @@ public class RuleExecutionObject implements Serializable {
     }
 
     /**
-     * Date 2017/7/25
-     * Author lihao [lihao@sinosoft.com]
-     * <p>
      * 方法说明: 设置Global参数
-     *
      * @param key   key
      * @param value 值
      */
@@ -55,35 +45,5 @@ public class RuleExecutionObject implements Serializable {
 
 
 
-    public List<Object> getFactObjectList() {
-        return this.factObjectList;
-    }
 
-    public void setFactObjectList(List<Object> factObjectList) {
-        this.factObjectList = factObjectList;
-    }
-
-    public Map<String, Object> getGlobalMap() {
-        return globalMap;
-    }
-
-    public void setGlobalMap(Map<String, Object> globalMap) {
-        this.globalMap = globalMap;
-    }
-
-    public boolean isExecuteAll() {
-        return executeAll;
-    }
-
-    public void setExecuteAll(boolean executeAll) {
-        this.executeAll = executeAll;
-    }
-
-    public String getRuleName() {
-        return ruleName;
-    }
-
-    public void setRuleName(String ruleName) {
-        this.ruleName = ruleName;
-    }
 }

@@ -2,11 +2,13 @@ package com.stu.drools.biz;
 
 import com.stu.drools.mapper.RuleSceneEntityRelInfoMapper;
 import com.stu.drools.model.RuleEntityInfo;
+import com.stu.drools.model.RuleSceneEntityRelInfo;
 import com.stu.drools.model.RuleSceneInfo;
 import com.stu.drools.util.StringUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -19,7 +21,7 @@ public class RuleSceneEntityRelBiz {
      *
      * @param ruleSceneInfo 参数
      */
-    public List<RuleEntityInfo> findBaseRuleEntityListByScene(RuleSceneInfo ruleSceneInfo) throws Exception {
+    public List<RuleEntityInfo> findBaseRuleEntityListByScene(RuleSceneInfo ruleSceneInfo)  {
         //判断参数
         if (null == ruleSceneInfo || (StringUtil.strIsNull(ruleSceneInfo.getSceneIdentify()) &&
             null == ruleSceneInfo.getSceneId())) {
@@ -27,5 +29,9 @@ public class RuleSceneEntityRelBiz {
         }
         //查询数据
         return this.ruleSceneEntityRelInfoMapper.findBaseRuleEntityListByScene(ruleSceneInfo);
+    }
+
+    public void saveInfo(RuleSceneEntityRelInfo ruleSceneEntityRelInfo) {
+        this.ruleSceneEntityRelInfoMapper.insert(ruleSceneEntityRelInfo);
     }
 }

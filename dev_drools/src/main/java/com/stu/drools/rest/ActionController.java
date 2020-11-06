@@ -2,10 +2,7 @@ package com.stu.drools.rest;
 
 import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageInfo;
-import com.stu.drools.biz.RuleActionInfoBiz;
-import com.stu.drools.biz.RuleActionParamBiz;
-import com.stu.drools.biz.RuleEntityBiz;
-import com.stu.drools.biz.RuleEntityItemBiz;
+import com.stu.drools.biz.*;
 import com.stu.drools.common.ObjectRestResponse;
 import com.stu.drools.model.RuleActionInfo;
 import com.stu.drools.model.RuleActionParamInfo;
@@ -32,6 +29,8 @@ public class ActionController {
     private RuleActionInfoBiz ruleActionInfoBiz;
     @Autowired
     private RuleActionParamBiz ruleActionParamBiz;
+    @Autowired
+    private RuleActionParamValueBiz ruleActionParamValueBiz;
 
     @PostMapping(value = "/page")
     public ObjectRestResponse page(@RequestBody Map<String,Object> params){
@@ -70,6 +69,10 @@ public class ActionController {
             res.setErrorMsg("参数缺失");
             return res;
         }
+        ruleActionParamValueBiz.delByActionId(Long.valueOf(id));
+        ruleActionParamBiz.delByActionId(Long.valueOf(id));
+        ruleActionInfoBiz.delInfo(Long.valueOf(id));
+
         res.setSuucessMsg("删除成功");
         return res;
     }

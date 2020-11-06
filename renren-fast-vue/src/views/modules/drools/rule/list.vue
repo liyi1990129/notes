@@ -82,7 +82,7 @@
     <!-- 弹窗, 动作 -->
     <add-action v-if="addActionVisible" ref="addAction" @refreshDataList="getDataList"></add-action>
     <!-- 弹窗, 条件 -->
-    <add-condition v-if="addActionVisible" ref="addCondition" @refreshDataList="getDataList"></add-condition>
+    <add-condition v-if="addConditionVisible" ref="addCondition" @refreshDataList="getDataList"></add-condition>
 
   </div>
 </template>

@@ -59,6 +59,8 @@
         <template slot-scope="scope">
           <el-button v-if="isAuth('sys:menu:update')" type="text" size="small" @click="addOrUpdateHandle(scope.row.sceneId)">修改</el-button>
           <el-button v-if="isAuth('sys:menu:delete')" type="text" size="small" @click="deleteHandle(scope.row.sceneId)">删除</el-button>
+          <el-button v-if="isAuth('sys:menu:delete')" type="text" size="small" @click="show(scope.row.sceneIdentify)">预览模板</el-button>
+          <el-button v-if="isAuth('sys:menu:delete')" type="text" size="small" @click="showResult(scope.row.sceneId)">测试接口</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -76,17 +78,33 @@
 
     <!-- 弹窗, 新增 / 修改 -->
     <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"></add-or-update>
+    <!-- 弹窗, 新增 / 修改 -->
+    <test-condition v-if="testConditionVisible" ref="testCondition"></test-condition>
+
+    <el-dialog
+      title="模板预览"
+      :visible.sync="showVisbale"
+      width="60%">
+      <pre>{{templateStr}}</pre>
+      <span slot="footer" class="dialog-footer">
+    <el-button @click="showVisbale = false">取 消</el-button>
+    <el-button type="primary" @click="showVisbale = false">确 定</el-button>
+  </span>
+    </el-dialog>
 
   </div>
 </template>
 
 <script>
-  import { pageList, del } from '@/api/scene'
+  import { pageList, del, showTemplate } from '@/api/scene'
   import AddOrUpdate from './add-or-update'
+  import TestCondition from './test-condition'
 
   export default {
     data () {
       return {
+        templateStr: '',
+        showVisbale: false,
         dataForm: {
           sceneType: '',
           sceneIdentify: ''
@@ -94,6 +112,7 @@
         dataList: [],
         dataListLoading: false,
         addOrUpdateVisible: false,
+        testConditionVisible: false,
         page: {
           pageIndex: 1,
           pageSize: 10,
@@ -102,12 +121,19 @@
       }
     },
     components: {
-      AddOrUpdate
+      AddOrUpdate,
+      TestCondition
     },
     activated () {
       this.getDataList()
     },
     methods: {
+      showResult (id) {
+        this.testConditionVisible = true
+        this.$nextTick(() => {
+          this.$refs.testCondition.init(id)
+        })
+      },
       // 每页数
       sizeChangeHandle (val) {
         this.page.pageSize = val
@@ -134,6 +160,16 @@
           this.page.totalPage = res.data.data.total
         })
       },
+      show (scene) {
+        let params = {
+          scene: scene
+        }
+        showTemplate(params).then(res => {
+          this.templateStr = res.data.data
+          this.showVisbale = true
+        })
+      },
+
       // 新增 / 修改
       addOrUpdateHandle (id) {
         this.addOrUpdateVisible = true

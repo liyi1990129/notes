@@ -148,12 +148,12 @@
         visible: false,
         dataForm: {
           id: 0,
-          entityName: '',
-          entityDesc: '',
-          entityIdentify: '',
-          pkgName: '',
+          sceneId: null,
+          ruleName: '',
+          ruleDesc: '',
+          ruleEnabled: '1',
           remark: '',
-          isEffect: 1
+          isEffect: '1'
         },
         entitys: [],
         ruleProperties: [],
@@ -250,8 +250,8 @@
             this.$refs['dataItemForm'].validate((valid1) => {
               if (valid1) {
                 let params = {
-                  entity: JSON.stringify(this.dataForm),
-                  entityItems: JSON.stringify(this.itemDataForm.itemData)
+                  rule: JSON.stringify(this.dataForm),
+                  relList: JSON.stringify(this.itemDataForm.itemData)
                 }
                 saveOrUpdate(params).then(res => {
                   if (res.data && res.data.resultCode === 0) {
@@ -261,6 +261,15 @@
                       duration: 1500,
                       onClose: () => {
                         this.visible = false
+                        this.dataForm = {
+                          sceneId: null,
+                          ruleName: '',
+                          ruleDesc: '',
+                          ruleEnabled: '1',
+                          remark: '',
+                          isEffect: '1'
+                        }
+                        this.itemDataForm.itemData = []
                         this.$emit('refreshDataList')
                       }
                     })

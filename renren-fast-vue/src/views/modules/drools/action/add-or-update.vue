@@ -3,7 +3,7 @@
     :title="!dataForm.id ? '新增' : '修改'"
     :close-on-click-modal="false"
     :visible.sync="visible">
-    <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="80px">
+    <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="100px">
 
       <el-row>
         <el-col :span="12">
@@ -53,7 +53,7 @@
             :key="item.pkgName"
             :label="item.entityName"
             :value="item.pkgName"
-            @click.native="changeEntity(item,scope.row)">
+            @click.native="changeEntity(item)">
           </el-option>
         </el-select>
       </el-form-item>
@@ -149,8 +149,8 @@
     data () {
       return {
         actionTypes: [
-          {label: '实现', value: 1},
-          {label: '自身', value: 2}
+          {label: '实现', value: '1'},
+          {label: '自身', value: '2'}
         ],
         visible: false,
         dataForm: {
@@ -160,7 +160,7 @@
           actionClass: '',
           actionDesc: '',
           remark: '',
-          isEffect: 1
+          isEffect: '1'
         },
         entitys: [],
         entitysProperties: [],
@@ -200,13 +200,13 @@
           }
         })
       },
-      changeEntity (item, row) {
+      changeEntity (item) {
         this.getEntityProperties(item.entityId)
       },
       // 获取实体类的属性
       getEntityProperties (id) {
         let params = {
-          id: id
+          id: id + ''
         }
         entityItemList(params).then(res => {
           if (res.data.data) {
@@ -224,8 +224,9 @@
           }
           getInfo(params).then(res => {
             if (res.data.data && res.data.resultCode === 0) {
-              this.dataForm = res.data.data.info
+              this.dataForm = res.data.data.action
               this.itemDataForm.itemData = res.data.data.actionItems
+              this.getEntityProperties(this.dataForm.actionClass)
             }
           })
         }
@@ -249,7 +250,6 @@
       },
 
       changeEntityItem (item, row) {
-        debugger
         let list = this.itemDataForm.itemData.filter(i => i.paramIdentify === item.paramIdentify)
         if (list && list.length > 1) {
           row.paramIdentify = ''
@@ -268,8 +268,8 @@
             this.$refs['dataItemForm'].validate((valid1) => {
               if (valid1) {
                 let params = {
-                  entity: JSON.stringify(this.dataForm),
-                  entityItems: JSON.stringify(this.itemDataForm.itemData)
+                  action: JSON.stringify(this.dataForm),
+                  actionItems: JSON.stringify(this.itemDataForm.itemData)
                 }
                 saveOrUpdate(params).then(res => {
                   if (res.data && res.data.resultCode === 0) {
@@ -279,6 +279,17 @@
                       duration: 1500,
                       onClose: () => {
                         this.visible = false
+                        this.dataForm = {
+                          id: 0,
+                          actionType: '',
+                          actionName: '',
+                          actionClass: '',
+                          actionDesc: '',
+                          remark: '',
+                          isEffect: '1'
+                        }
+                        this.itemDataForm.itemData = []
+                        this.entitys = []
                         this.$emit('refreshDataList')
                       }
                     })

@@ -39,3 +39,17 @@ export function getInfo (data) {
     data: data
   })
 }
+export function showTemplate (data) {
+  return httpRequest({
+    url: constant.DR + '/scene/showTemplate',
+    method: 'post',
+    data: data
+  })
+}
+export function testRule (data) {
+  return httpRequest({
+    url: constant.DR + '/scene/testRule',
+    method: 'post',
+    data: data
+  })
+}

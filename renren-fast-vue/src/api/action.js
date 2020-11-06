@@ -8,25 +8,10 @@ export function pageList (data) {
     data: data
   })
 }
-export function propertyList (data) {
-  return httpRequest({
-    url: constant.DR + '/property/list',
-    method: 'post',
-    data: data
-  })
-}
-
-export function sceneList (data) {
-  return httpRequest({
-    url: constant.DR + '/scene/list',
-    method: 'post',
-    data: data
-  })
-}
 
 export function saveOrUpdate (data) {
   return httpRequest({
-    url: constant.DR + '/rule/saveOrUpdate',
+    url: constant.DR + '/action/saveOrUpdate',
     method: 'post',
     data: data
   })
@@ -34,7 +19,7 @@ export function saveOrUpdate (data) {
 
 export function del (data) {
   return httpRequest({
-    url: constant.DR + '/rule/del',
+    url: constant.DR + '/action/del',
     method: 'post',
     data: data
   })
@@ -42,7 +27,7 @@ export function del (data) {
 
 export function getInfo (data) {
   return httpRequest({
-    url: constant.DR + '/rule/get',
+    url: constant.DR + '/action/get',
     method: 'post',
     data: data
   })

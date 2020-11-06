@@ -78,9 +78,9 @@
             <el-select v-model="scope.row.itemIdentify" filterable placeholder="请选择">
               <el-option
                 v-for="item in entitysProperties"
-                :key="item"
-                :label="item"
-                :value="item"
+                :key="item.filedName"
+                :label="item.filedName"
+                :value="item.filedName"
                 @click.native="changeEntityItem(item,scope.row)">
               </el-option>
             </el-select>
@@ -136,12 +136,13 @@
         visible: false,
         dataForm: {
           id: 0,
+          entityId: null,
           entityName: '',
           entityDesc: '',
           entityIdentify: '',
           pkgName: '',
           remark: '',
-          isEffect: 1
+          isEffect: '1'
         },
         entitys: [],
         entitysProperties: [],
@@ -233,11 +234,14 @@
       },
 
       changeEntityItem (item, row) {
-        let list = this.itemDataForm.itemData.filter(i => i.itemIdentify === item)
-        if (list && list.length >= 1) {
+        let list = this.itemDataForm.itemData.filter(i => i.itemIdentify === item.filedName)
+        if (list && list.length > 1) {
           row.itemIdentify = ''
+          row.itemName = ''
           this.$message.error('属性标识不能重复')
         }
+
+        row.itemName = item.chName
       },
 
       // 表单提交
@@ -258,6 +262,17 @@
                       duration: 1500,
                       onClose: () => {
                         this.visible = false
+                        this.dataForm = {
+                          entityId: null,
+                          entityName: '',
+                          entityDesc: '',
+                          entityIdentify: '',
+                          pkgName: '',
+                          remark: '',
+                          isEffect: '1'
+                        }
+                        this.itemDataForm.itemData = []
+                        this.entitysProperties = []
                         this.$emit('refreshDataList')
                       }
                     })

@@ -3,12 +3,12 @@
     title="动作关联"
     :close-on-click-modal="false"
     :visible.sync="visible">
+    <el-row style="margin-bottom: 10px;">
+      <el-col :span="4">
+        <el-button type="primary" @click="addItem()">新增</el-button>
+      </el-col>
+    </el-row>
     <el-row v-for="(action,index) in listData">
-      <el-row style="margin-bottom: 10px;">
-        <el-col :span="4">
-          <el-button type="primary" @click="addItem()">新增</el-button>
-        </el-col>
-      </el-row>
       <el-row style="margin-bottom: 10px;">
         <el-col :span="4">
           动作名称：
@@ -20,7 +20,7 @@
               :key="item.actionId"
               :label="item.actionName"
               :value="item.actionId"
-              @click.native="changeAction(item,scope.row)">
+              @click.native="changeAction(item,index)">
             </el-option>
           </el-select>
         </el-col>
@@ -160,7 +160,7 @@
       </el-row>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+        <el-button type="primary" @click="getValue">确 定</el-button>
       </span>
     </el-dialog>
 
@@ -171,6 +171,7 @@
 
 <script>
   import { addAction, saveAction } from '@/api/rule'
+  import { getInfo } from '@/api/action'
   import { entityItemList } from '@/api/entity'
 
   export default {
@@ -185,15 +186,23 @@
         entityInfos: [],
         entityItemInfos: [],
         visible: false,
-        dialogVisible: false
+        dialogVisible: false,
+        chooseIndex: null,
+        chooseActionIndex: null
       }
     },
     created () {
 
     },
     methods: {
+      getValue () {
+        this.listData[this.chooseActionIndex].relList[this.chooseIndex].paramValue = this.inputV
+        this.dialogVisible = false
+      },
       showV (data, i, action, index) {
         this.inputV = data.paramValue
+        this.chooseActionIndex = index
+        this.chooseIndex = i
         this.dialogVisible = true
       },
       insertV (data) {
@@ -229,20 +238,40 @@
         })
       },
       addItem () {
-
+        let item = {
+          actionId: null,
+          ruleId: this.ruleId,
+          relList: []
+        }
+        this.listData.push(item)
       },
       deleteItem (index, rows) {
         rows.splice(index, 1)
       },
 
       changeAction (item, row) {
-        // let list = this.itemDataForm.itemData.filter(i => i.rulePropertyId === item.rulePropertyId)
-        // if (list && list.length > 1) {
-        //   row.rulePropertyId = ''
-        //   row.rulePropertyName = ''
-        //   this.$message.error('属性不能重复')
-        // }
-        // row.rulePropertyName = item.rulePropertyName
+        debugger
+        let actionId = item.actionId
+        let params = {
+          id: actionId + ''
+        }
+        getInfo(params).then(res => {
+          if (res.data.data && res.data.resultCode === 0) {
+            this.listData[row].relList = []
+            res.data.data.actionItems.forEach(item => {
+              const paramValue = {
+                actionParamId: item.actionParamId,
+                paramValue: '',
+                isEffect: '1',
+                ruleId: this.ruleId,
+                actionId: actionId
+              }
+              this.listData[row].relList.push(paramValue)
+            })
+
+            this.listData[row].paramInfoList = res.data.data.actionItems
+          }
+        })
       },
 
       // 表单提交

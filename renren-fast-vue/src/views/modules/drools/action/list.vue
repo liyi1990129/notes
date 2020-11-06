@@ -181,9 +181,9 @@
     filters: {
       typePipe: function (value) {
         let label = ''
-        if (value === 1) {
+        if (value === '1') {
           label = '实现'
-        } else if (value === 2) {
+        } else if (value === '2') {
           label = '自身'
         }
         return label

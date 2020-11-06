@@ -124,7 +124,7 @@
           sceneIdentify: '',
           sceneType: '',
           remark: '',
-          isEffect: 1
+          isEffect: '1'
         },
         sceneTypes: [],
         entitysProperties: [],
@@ -211,8 +211,8 @@
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
             let params = {
-              entity: JSON.stringify(this.dataForm),
-              entityItems: JSON.stringify(this.itemDataForm.itemData)
+              scene: JSON.stringify(this.dataForm),
+              entitys: JSON.stringify(this.itemDataForm.itemData)
             }
             saveOrUpdate(params).then(res => {
               if (res.data && res.data.resultCode === 0) {
@@ -222,6 +222,16 @@
                   duration: 1500,
                   onClose: () => {
                     this.visible = false
+                    this.dataForm = {
+                      sceneName: '',
+                      sceneDesc: '',
+                      sceneIdentify: '',
+                      sceneType: '',
+                      remark: '',
+                      isEffect: '1'
+                    }
+                    this.itemDataForm.itemData = []
+                    this.entitysProperties = []
                     this.$emit('refreshDataList')
                   }
                 })

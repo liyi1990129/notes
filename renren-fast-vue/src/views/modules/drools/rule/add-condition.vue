@@ -28,7 +28,7 @@
           label="条件表达式"
           >
           <template slot-scope="scope">
-              <el-input v-model="scope.row.conditionExpression" @focus="showV(scope.row)" placeholder="参数值"></el-input>
+              <el-input v-model="scope.row.conditionExpression" @focus="showV(scope.row,scope.$index)" placeholder="参数值"></el-input>
           </template>
         </el-table-column>
         <el-table-column
@@ -145,7 +145,7 @@
       </el-row>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+        <el-button type="primary" @click="getExp">确 定</el-button>
       </span>
     </el-dialog>
 
@@ -170,15 +170,22 @@
         entityInfos: [],
         entityItemInfos: [],
         visible: false,
-        dialogVisible: false
+        dialogVisible: false,
+        chooseIndex: null
       }
     },
     created () {
 
     },
     methods: {
-      showV (data) {
+      getExp () {
+        this.conditionList[this.chooseIndex].conditionExpression = this.inputV
+        this.dialogVisible = false
+      },
+      showV (data, index) {
+        debugger
         this.inputV = data.conditionExpression
+        this.chooseIndex = index
         this.dialogVisible = true
       },
       insertV (data) {
@@ -218,7 +225,7 @@
           conditionName: '',
           conditionExpression: '',
           conditionDesc: '',
-          isEffect: 1
+          isEffect: '1'
         }
         this.conditionList.push(item)
       },

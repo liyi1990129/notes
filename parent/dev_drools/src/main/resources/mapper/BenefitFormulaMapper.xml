@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.drools.mapper.BenefitFormulaMapper">
+
+    <select id="findBenefitFormulaByCrtableAndBenCode" resultType="com.drools.model.BenefitFormula">
+        SELECT * FROM benefit_formula WHERE crtable = #{crtable} and ben_code = #{benCode}
+    </select>
+
+
+    <select id="findByCrtable" resultType="com.drools.model.BenefitFormula">
+        SELECT *
+        FROM benefit_formula
+        WHERE crtable = #{crtable}
+    </select>
+    <select id="list" resultType="com.drools.model.BenefitFormula">
+        SELECT *
+        FROM benefit_formula
+        <where>
+            <if test="crtable != null and crtable != ''">
+                crtable = #{crtable}
+            </if>
+        </where>
+        group by crtable
+    </select>
+</mapper>

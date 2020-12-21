@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.drools.mapper.publish.PublishRuleSceneEntityRelInfoMapper">
+
+    <select id="findBaseRuleEntityListByScene" parameterType="com.drools.model.publish.PublishRuleSceneInfo"
+            resultType="com.drools.model.RuleEntityInfo">
+        SELECT DISTINCT
+        E.ENTITY_ID,
+        E.ENTITY_NAME,
+        E.ENTITY_DESC,
+        E.ENTITY_IDENTIFY,
+        E.PKG_NAME,
+        E.CRE_USER_ID,
+        E.CRE_TIME,
+        E.IS_EFFECT,
+        E.REMARK
+        FROM
+        RULE_ENTITY_INFO E
+        INNER JOIN PUBLISH_RULE_SCENE_ENTITY_REL SER ON E.ENTITY_ID = SER.ENTITY_ID
+        INNER JOIN PUBLISH_RULE_SCENE_INFO S ON S.SCENE_IDENTIFY = SER.SCENE_IDENTIFY
+        WHERE
+        1 = 1
+        AND E.IS_EFFECT = 1
+        AND S.IS_EFFECT = 1
+        <if test="sceneIdentify != null">
+            AND S.SCENE_IDENTIFY = #{sceneIdentify}
+        </if>
+        <if test="sceneId != null">
+            AND S.SCENE_ID = #{sceneId}
+        </if>
+        <if test="publishVersion != null">
+            AND S.PUBLISH_VERSION = #{publishVersion}
+        </if>
+
+    </select>
+</mapper>

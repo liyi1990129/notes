@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.drools.mapper.publish.PublishRuleInfoMapper">
+
+    <select id="findBaseRuleListByScene" parameterType="com.drools.model.publish.PublishRuleSceneInfo"
+            resultType="com.drools.model.publish.PublishRuleInfo">
+        SELECT DISTINCT
+        R.RULE_ID,
+        R.RULE_CODE,
+        R.SCENE_IDENTIFY,
+        R.RULE_NAME,
+        R.RULE_DESC,
+        R.RULE_ENABLED,
+        R.IS_EFFECT,
+        R.CRE_USER_ID,
+        R.CRE_TIME,
+        R.REMARK,
+        R.PUBLISH_VERSION
+        FROM
+        PUBLISH_RULE_INFO R
+        INNER JOIN PUBLISH_RULE_SCENE_INFO S ON S.SCENE_IDENTIFY = R.SCENE_IDENTIFY
+        WHERE
+        1 = 1
+        AND S.IS_EFFECT = 1
+        AND R.IS_EFFECT = 1
+        AND R.RULE_ENABLED = 1
+        AND S.PUBLISH_VERSION = R.PUBLISH_VERSION
+        <if test="sceneIdentify != null">
+            AND S.SCENE_IDENTIFY = #{sceneIdentify}
+        </if>
+        <if test="sceneId != null">
+            AND S.SCENE_ID = #{sceneId}
+        </if>
+        <if test="publishVersion != null">
+            AND S.PUBLISH_VERSION = #{publishVersion}
+        </if>
+
+    </select>
+
+    <select id="findRulePropertyListByRuleCode" resultType="com.drools.vo.RulePropertyRelInfoVo">
+        SELECT DISTINCT
+        RPR.RULE_PRO_REL_ID,
+        RPR.RULE_CODE,
+        RPR.RULE_PROPERTY_ID,
+        RPR.RULE_PROPERTY_VALUE,
+        T.RULE_PROPERTY_IDENTIFY,
+        T.RULE_PROPERTY_NAME,
+        T.RULE_PROPERTY_DESC,
+        T.DEFAULT_VALUE,
+        T.IS_EFFECT,
+        T.REMARK
+        FROM
+        RULE_PROPERTY_INFO T
+        INNER JOIN PUBLISH_RULE_PROPERTY_REL RPR ON RPR.RULE_PROPERTY_ID = T.RULE_PROPERTY_ID
+        WHERE
+        1 = 1
+        AND T.IS_EFFECT = 1
+        <if test="ruleCode != null">
+            AND RPR.RULE_CODE = #{ruleCode}
+        </if>
+        <if test="publishVersion != null">
+            AND RPR.PUBLISH_VERSION = #{publishVersion}
+        </if>
+    </select>
+
+</mapper>

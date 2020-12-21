@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.drools.mapper.RuleInfoMapper">
+    <select id="findBaseRulePropertyInfoList" parameterType="com.drools.model.RulePropertyInfo"
+            resultType="com.drools.model.RulePropertyInfo">
+        SELECT DISTINCT
+        T.RULE_PROPERTY_ID,
+        T.RULE_PROPERTY_IDENTIFY,
+        T.RULE_PROPERTY_NAME,
+        T.RULE_PROPERTY_DESC,
+        T.DEFAULT_VALUE,
+        T.IS_EFFECT,
+        T.REMARK
+        FROM
+        RULE_PROPERTY_INFO T
+        WHERE
+        1 = 1
+        <if test="rulePropertyIdentify != null">
+            AND T.RULE_PROPERTY_IDENTIFY = #{rulePropertyIdentify}
+        </if>
+        <if test="rulePropertyName != null">
+            AND T.RULE_PROPERTY_NAME LIKE CONCAT('%',#{rulePropertyName},'%')
+        </if>
+    </select>
+
+    <select id="findRulePropertyListByRuleId" resultType="com.drools.vo.RulePropertyRelInfoVo">
+        SELECT DISTINCT
+        RPR.RULE_PRO_REL_ID,
+        RPR.RULE_CODE,
+        RPR.RULE_PROPERTY_ID,
+        RPR.RULE_PROPERTY_VALUE,
+        T.RULE_PROPERTY_IDENTIFY,
+        T.RULE_PROPERTY_NAME,
+        T.RULE_PROPERTY_DESC,
+        T.DEFAULT_VALUE,
+        T.IS_EFFECT,
+        T.REMARK
+        FROM
+        RULE_PROPERTY_INFO T
+        INNER JOIN RULE_PROPERTY_REL RPR ON RPR.RULE_PROPERTY_ID = T.RULE_PROPERTY_ID
+        WHERE
+        1 = 1
+        AND T.IS_EFFECT = 1
+        <if test="ruleCode != null">
+            AND RPR.RULE_CODE = #{ruleCode}
+        </if>
+
+    </select>
+    <select id="findBaseRuleListByScene" parameterType="com.drools.model.RuleSceneInfo"
+            resultType="com.drools.model.RuleInfo">
+        SELECT DISTINCT
+        R.RULE_ID,
+        R.RULE_CODE,
+        R.SCENE_IDENTIFY,
+        R.RULE_NAME,
+        R.RULE_DESC,
+        R.RULE_ENABLED,
+        R.IS_EFFECT,
+        R.CRE_USER_ID,
+        R.CRE_TIME,
+        R.REMARK
+        FROM
+        RULE_INFO R
+        INNER JOIN RULE_SCENE_INFO S ON S.SCENE_IDENTIFY = R.SCENE_IDENTIFY
+        WHERE
+        1 = 1
+        AND S.IS_EFFECT = 1
+        AND R.IS_EFFECT = 1
+        AND R.RULE_ENABLED = 1
+        <if test="sceneIdentify != null">
+            AND S.SCENE_IDENTIFY = #{sceneIdentify}
+        </if>
+        <if test="sceneId != null">
+            AND S.scene_id = #{sceneId}
+        </if>
+
+    </select>
+    <select id="list" parameterType="com.drools.model.RuleInfo"
+            resultType="com.drools.vo.RuleInfoVo">
+        SELECT DISTINCT
+        R.RULE_ID,
+        R.RULE_CODE,
+        R.RULE_NAME,
+        R.RULE_DESC,
+        R.RULE_ENABLED,
+        R.IS_EFFECT,
+        R.CRE_USER_ID,
+        R.CRE_TIME,
+        R.REMARK,
+        S.SCENE_IDENTIFY,
+        S.SCENE_NAME
+        FROM
+        RULE_INFO R
+        INNER JOIN RULE_SCENE_INFO S ON S.SCENE_IDENTIFY = R.SCENE_IDENTIFY
+        WHERE
+        1 = 1
+        <if test="ruleName != null and ruleName!=''">
+            AND R.RULE_NAME LIKE CONCAT('%',#{ruleName},'%')
+        </if>
+        <if test="sceneIdentify != null and sceneIdentify!=''">
+            AND R.SCENE_IDENTIFY = #{sceneIdentify}
+        </if>
+
+    </select>
+
+
+    <insert id="add" parameterType="com.drools.model.RuleInfo"
+            useGeneratedKeys="true" keyColumn="rule_id" keyProperty="ruleId">
+        insert into RULE_INFO
+        (
+        SCENE_IDENTIFY,
+        RULE_CODE,
+        RULE_NAME,
+        RULE_DESC,
+        RULE_ENABLED,
+        CRE_USER_ID,
+        CRE_TIME,
+        IS_EFFECT,
+        REMARK)
+        values(
+        #{sceneIdentify},
+        #{ruleCode},
+        #{ruleName},
+        #{ruleDesc},
+        #{ruleEnabled},
+        #{creUserId},
+        #{creTime},
+        #{isEffect},
+        #{remark}
+        )
+        <selectKey resultType="long" keyProperty="ruleId" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+</mapper>

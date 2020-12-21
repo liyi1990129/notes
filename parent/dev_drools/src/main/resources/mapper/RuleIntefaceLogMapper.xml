@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.drools.mapper.RuleInterfaceLogMapper">
+
+    <select id="countByInterface" resultType="com.drools.vo.RuleInterfaceLogVo"
+            parameterType="com.drools.model.RuleInterfaceLog">
+                select b.*,a.interface_name from
+                 (
+                     select count(interface_identify) as reqCount, interface_identify from rule_interface_log
+                      where 1=1
+                    group by interface_identify
+                ) as b
+                left join rule_interface a
+                on b.interface_identify = a.interface_identify
+    </select>
+    <select id="countByInterfaceIdentify" resultType="com.drools.vo.RuleInterfaceLogVo"
+            parameterType="com.drools.model.RuleInterfaceLog">
+                select b.*,a.interface_name from
+                 (
+                select count(interface_identify) as reqCount, interface_identify,DATE_FORMAT(BEGIN_TIME,'%Y-%m-%d') as oneDay from rule_interface_log
+                      where 1=1
+
+                    <if test="beginTime != null and endTime !=null ">
+                        and begin_time &gt;= #{beginTime}
+                        and begin_time &lt;= #{endTime}
+                    </if>
+                    <if test="interfaceIdentify != null and interfaceIdentify !='' ">
+                        and interface_identify = #{interfaceIdentify}
+                    </if>
+                    group by oneDay order by oneDay
+                ) as b
+                left join rule_interface a
+                on b.interface_identify = a.interface_identify
+    </select>
+
+    <select id="listByParams" resultType="com.drools.vo.RuleInterfaceLogVo"
+            parameterType="com.drools.model.RuleInterfaceLog">
+               select ril.*,ri.interface_name from rule_interface_log ril
+               left join rule_interface ri
+               on ri.interface_identify = ril.interface_identify
+               where 1=1
+                    <if test="beginTime != null and endTime !=null ">
+                        and ril.begin_time &gt;= #{beginTime}
+                        and ril.begin_time &lt;= #{endTime}
+                    </if>
+                    <if test="interfaceIdentify != null and interfaceIdentify !='' ">
+                        and ril.interface_identify = #{interfaceIdentify}
+                     </if>
+                  order by ril.begin_time desc
+    </select>
+
+    <select id="countByBatchNo" resultType="com.drools.model.RuleInterfaceLog" parameterType="com.drools.model.RuleInterfaceLog">
+        select * from rule_interface_log where batch_no =#{batchNo} limit 1
+    </select>
+
+
+</mapper>

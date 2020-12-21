@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.drools.mapper.RuleSceneLogMapper">
+
+    <select id="listByBatch" parameterType="com.drools.model.RuleSceneLog" resultType="com.drools.model.RuleSceneLog">
+        select rsl.*,rs.scene_name from rule_scene_log rsl
+        left join rule_scene_info rs
+        on rs.scene_identify = rsl.scene_identify
+        where 1=1
+        <if test="interfaceIdentify != null and interfaceIdentify !='' ">
+            and rsl.interface_identify = #{interfaceIdentify}
+        </if>
+        <if test="batchNo != null and batchNo !='' ">
+            and rsl.batch_no = #{batchNo}
+        </if>
+    </select>
+
+
+</mapper>
